@@ -6,7 +6,7 @@ import org.junit.Test
 import org.junit.Assert.*
 
 /*
- *  Created by Katili Jiwo Adi Wiyono on 23/04/20.
+ *  Created by Katili Jiwo Adi Wiyono on 24/04/20.
  */
 
 class TvShowViewModelTest {

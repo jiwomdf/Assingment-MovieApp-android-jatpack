@@ -1,8 +1,6 @@
 package com.programmergabut.moviecatalogue.ui.detail
 
 import androidx.lifecycle.ViewModel
-import com.programmergabut.moviecatalogue.data.Movie
-import com.programmergabut.moviecatalogue.data.Show
 import com.programmergabut.moviecatalogue.utils.DataDummy
 
 class DetailActivityViewModel: ViewModel() {

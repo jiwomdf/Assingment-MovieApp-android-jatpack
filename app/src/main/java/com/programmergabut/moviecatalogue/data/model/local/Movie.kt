@@ -1,4 +1,4 @@
-package com.programmergabut.moviecatalogue.data
+package com.programmergabut.moviecatalogue.data.model.local
 
 /*
  *  Created by Katili Jiwo Adi Wiyono on 23/04/20.

@@ -5,9 +5,9 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.Movie
-import com.programmergabut.moviecatalogue.data.Show
-import com.programmergabut.moviecatalogue.data.TvShow
+import com.programmergabut.moviecatalogue.data.model.local.Movie
+import com.programmergabut.moviecatalogue.data.model.local.Show
+import com.programmergabut.moviecatalogue.data.model.local.TvShow
 import kotlinx.android.synthetic.main.activity_detail.*
 import java.lang.Exception
 
@@ -38,7 +38,7 @@ class DetailActivity : AppCompatActivity() {
         val data = viewmodel.getDetailData(dataID, dataType) as Show
 
         Glide.with(this)
-            .load(data.imgUrl)
+            .load(data.imgUrl) //karena image terlalu besar, glide menjadi lama untuk load datanya
             .centerCrop()
             .into(iv_detail)
 
