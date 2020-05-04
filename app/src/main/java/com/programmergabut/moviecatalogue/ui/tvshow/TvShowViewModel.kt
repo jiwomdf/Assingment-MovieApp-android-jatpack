@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
  *  Created by Katili Jiwo Adi Wiyono on 23/04/20.
  */
 
-class TvShowViewModel: ViewModel() {
+class TvShowViewModel(private val repository: MCRepository): ViewModel() {
 
     val oaTvShowApi = MutableLiveData<Resource<OATvShowApi>>()
 
@@ -27,7 +27,7 @@ class TvShowViewModel: ViewModel() {
     fun fetchOnAirTvShow() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                oaTvShowApi.postValue(Resource.success(MCRepository().fetchOATvShowApi()))
+                oaTvShowApi.postValue(Resource.success(repository.fetchOATvShowApi()))
             }
             catch (ex: Exception){
                 oaTvShowApi.postValue(Resource.error(ex.message.toString(), null))

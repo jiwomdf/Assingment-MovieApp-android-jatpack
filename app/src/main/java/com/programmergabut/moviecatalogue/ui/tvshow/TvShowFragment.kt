@@ -13,6 +13,7 @@ import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result
 import com.programmergabut.moviecatalogue.ui.movie.MovieAdapter
 import com.programmergabut.moviecatalogue.utils.EnumStatus
+import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list_movie.*
 import kotlinx.android.synthetic.main.fragment_tv_show.*
 
@@ -27,7 +28,7 @@ class TvShowFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory())[TvShowViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory.getInstance())[TvShowViewModel::class.java]
 
         return inflater.inflate(R.layout.fragment_tv_show, container, false)
     }

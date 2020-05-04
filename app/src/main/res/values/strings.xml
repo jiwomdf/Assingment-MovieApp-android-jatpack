@@ -4,5 +4,6 @@
     <string name="movie">Movie</string>
     <string name="tvshow">TvShow</string>
     <string name="movie_image">Movie Image</string>
+    <string name="tvShow_image">Tv Show Image</string>
 
 </resources>

@@ -1,8 +1,10 @@
 package com.programmergabut.moviecatalogue.data.repository
 
 import com.google.gson.GsonBuilder
+import com.programmergabut.moviecatalogue.data.api.GenreService
 import com.programmergabut.moviecatalogue.data.api.NPMovieService
 import com.programmergabut.moviecatalogue.data.api.OATvShowService
+import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
 import retrofit2.Retrofit.Builder
@@ -22,6 +24,17 @@ class MCRepository {
     private val language = "en-US"
     private val page = "1"
 
+    companion object {
+        @Volatile
+        private var instance: MCRepository? = null
+
+        fun getInstance(): MCRepository {
+            return instance ?: synchronized(this) {
+                instance ?: MCRepository()
+            }
+        }
+    }
+
     private fun getNowPlayingMovieApi(): NPMovieService{
         return Builder()
             .baseUrl(strApi)
@@ -38,6 +51,14 @@ class MCRepository {
             .create(OATvShowService::class.java)
     }
 
+    private fun getGenreApi(): GenreService{
+        return Builder()
+            .baseUrl(strApi)
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .build()
+            .create(GenreService::class.java)
+    }
+
     suspend fun fetchNPMovieApi(): NPMovieApi {
         return getNowPlayingMovieApi().fetchNpMovie(apiKey, language, page)
     }
@@ -46,7 +67,8 @@ class MCRepository {
         return getOnAirTvShowApi().fetchOATvShow(apiKey, language, page)
     }
 
-
-
+    suspend fun fetchGenreApi(): GenreApi {
+        return getGenreApi().fetchGenre(apiKey, language)
+    }
 
 }

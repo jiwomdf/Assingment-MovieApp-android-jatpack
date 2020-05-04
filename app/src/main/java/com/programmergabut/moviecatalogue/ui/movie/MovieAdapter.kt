@@ -1,6 +1,7 @@
 package com.programmergabut.moviecatalogue.ui.movie
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
-import com.programmergabut.moviecatalogue.ui.detail.DetailActivity
-import com.programmergabut.moviecatalogue.utils.EnumConfig
+import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
 import kotlinx.android.synthetic.main.layout_movie.view.*
 
 /*
@@ -50,13 +50,36 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
                     .into(iv_movie)
 
                 setOnClickListener {
-                    val intent = Intent(context, DetailActivity::class.java).apply {
-                        putExtra(DetailActivity.dataID, movie.id)
-                        putExtra(DetailActivity.dataType, EnumConfig.typeMovie)
+
+                    val b = initBundle(movie.id, movie.title,
+                        movie.releaseDate, movie.overview, movie.voteCount,
+                        movie.genreIds as ArrayList<Int>)
+
+                    val intent = Intent(context, DetailMovieActivity::class.java).apply {
+                        putExtra(DetailMovieActivity.bundleMovieDetail, b)
                     }
                     context.startActivity(intent)
                 }
             }
+        }
+
+        private fun initBundle(
+           movieID: Int,
+           movieTitle: String,
+           movieReleaseDate: String,
+           movieOverview: String,
+           movieVoteCount: Int,
+           movieGenreID: ArrayList<Int>
+        ): Bundle {
+            val bundle = Bundle()
+            bundle.putInt("movie_id", movieID)
+            bundle.putString("movie_title", movieTitle)
+            bundle.putString("movie_releaseDate", movieReleaseDate)
+            bundle.putString("movie_overview", movieOverview)
+            bundle.putInt("movie_voteCount", movieVoteCount)
+            bundle.putIntegerArrayList("movie_genreId", movieGenreID)
+
+            return bundle
         }
     }
 

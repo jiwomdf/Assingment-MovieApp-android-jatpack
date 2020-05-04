@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
 import com.programmergabut.moviecatalogue.utils.EnumStatus
+import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list_movie.*
 
 /*
@@ -20,12 +21,12 @@ import kotlinx.android.synthetic.main.fragment_list_movie.*
 
 class MovieFragment : Fragment() {
 
-    lateinit var viewModel: MovieFragmentViewModel
+    private lateinit var viewModel: MovieFragmentViewModel
     private val mvAdapter = MovieAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(requireActivity(), ViewModelProvider.NewInstanceFactory())[MovieFragmentViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory.getInstance())[MovieFragmentViewModel::class.java]
 
         return inflater.inflate(R.layout.fragment_list_movie, container, false)
     }

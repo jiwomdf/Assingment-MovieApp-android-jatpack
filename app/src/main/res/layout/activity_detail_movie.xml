@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.detail.DetailActivity">
-
+    tools:context=".ui.detailMovie.DetailMovieActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -71,11 +70,19 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:cardCornerRadius="6dp">
+
+        <ProgressBar
+            android:id="@+id/pb_detail_genere"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
         <TextView
             android:id="@+id/tv_detail_genere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:visibility="invisible"
             tools:text="tv_detail_genere"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
