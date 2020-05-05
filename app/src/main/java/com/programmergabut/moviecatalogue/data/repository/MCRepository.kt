@@ -1,74 +1,78 @@
 package com.programmergabut.moviecatalogue.data.repository
 
-import com.google.gson.GsonBuilder
-import com.programmergabut.moviecatalogue.data.api.GenreService
-import com.programmergabut.moviecatalogue.data.api.NPMovieService
-import com.programmergabut.moviecatalogue.data.api.OATvShowService
+import androidx.lifecycle.MutableLiveData
+import com.programmergabut.moviecatalogue.data.RemoteDataSource
 import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
-import retrofit2.Retrofit.Builder
-import retrofit2.converter.gson.GsonConverterFactory
+import com.programmergabut.moviecatalogue.utils.Resource
+import com.programmergabut.moviecatalogue.utils.Resource.Companion.error
+import com.programmergabut.moviecatalogue.utils.Resource.Companion.success
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 /*
  *  Created by Katili Jiwo Adi Wiyono on 03/05/20.
  */
 
-class MCRepository {
+class MCRepository(private val remoteDataSource: RemoteDataSource) {
 
-    //https://api.themoviedb.org/3/movie/now_playing?api_key={apiKey}&language=en-US&page=1
-    //https://api.themoviedb.org/3/tv/on_the_air?api_key={apiKey}&language=en-US&page=1
-
-    private val strApi = "https://api.themoviedb.org/3/"
-    private val apiKey = ""
-    private val language = "en-US"
-    private val page = "1"
 
     companion object {
         @Volatile
         private var instance: MCRepository? = null
 
-        fun getInstance(): MCRepository {
-            return instance ?: synchronized(this) {
-                instance ?: MCRepository()
+        fun getInstance(remoteDataSource: RemoteDataSource): MCRepository =
+            instance ?: synchronized(this) {
+                instance ?: MCRepository(remoteDataSource)
+            }
+    }
+
+
+    fun getNPMovie(): MutableLiveData<Resource<NPMovieApi>> {
+        val result = MutableLiveData<Resource<NPMovieApi>>()
+
+        CoroutineScope(Dispatchers.Default).launch{
+            try {
+                result.postValue(success(remoteDataSource.fetchNPMovieApi()))
+            }
+            catch (ex: Exception){
+                result.postValue(error(ex.message.toString(), null))
             }
         }
+
+        return result
     }
 
-    private fun getNowPlayingMovieApi(): NPMovieService{
-        return Builder()
-            .baseUrl(strApi)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(NPMovieService::class.java)
+    fun getOATvShow(): MutableLiveData<Resource<OATvShowApi>> {
+        val result = MutableLiveData<Resource<OATvShowApi>>()
+
+        CoroutineScope(Dispatchers.Default).launch{
+            try {
+                result.postValue(success(remoteDataSource.fetchOATvShowApi()))
+            }
+            catch (ex: Exception){
+                result.postValue(error(ex.message.toString(), null))
+            }
+        }
+
+        return result
     }
 
-    private fun getOnAirTvShowApi(): OATvShowService{
-        return Builder()
-            .baseUrl(strApi)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(OATvShowService::class.java)
-    }
+    fun getGenreApi(): MutableLiveData<Resource<GenreApi>> {
+        val result = MutableLiveData<Resource<GenreApi>>()
 
-    private fun getGenreApi(): GenreService{
-        return Builder()
-            .baseUrl(strApi)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(GenreService::class.java)
-    }
+        CoroutineScope(Dispatchers.Default).launch{
+            try {
+                result.postValue(success(remoteDataSource.fetchGenreApi()))
+            }
+            catch (ex: Exception){
+                result.postValue(error(ex.message.toString(), null))
+            }
+        }
 
-    suspend fun fetchNPMovieApi(): NPMovieApi {
-        return getNowPlayingMovieApi().fetchNpMovie(apiKey, language, page)
-    }
-
-    suspend fun fetchOATvShowApi(): OATvShowApi {
-        return getOnAirTvShowApi().fetchOATvShow(apiKey, language, page)
-    }
-
-    suspend fun fetchGenreApi(): GenreApi {
-        return getGenreApi().fetchGenre(apiKey, language)
+        return result
     }
 
 }

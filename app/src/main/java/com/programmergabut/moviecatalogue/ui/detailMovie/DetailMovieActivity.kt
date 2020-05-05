@@ -45,7 +45,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     private fun fetchApi() {
-        detailMovieViewModel.fetchGenreApi()
+        detailMovieViewModel.genre()
     }
 
     private fun genreFilter(listGenre: List<Genre>): List<Genre> {
@@ -75,7 +75,7 @@ class DetailMovieActivity : AppCompatActivity() {
     }
 
     private fun observeApi() {
-        detailMovieViewModel.genreApi.observe(this, Observer {
+        detailMovieViewModel.genre().observe(this, Observer {
             when(it.Status){
                 EnumStatus.SUCCESS -> {
                     if(it.data?.genres == null)

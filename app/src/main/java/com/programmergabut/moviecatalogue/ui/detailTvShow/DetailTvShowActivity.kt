@@ -51,7 +51,7 @@ class DetailTvShowActivity : AppCompatActivity() {
     }
 
     private fun fetchApi() {
-        detailTvShowViewModel.fetchGenreApi()
+        detailTvShowViewModel.genre()
     }
 
     private fun genreFilter(listGenre: List<Genre>): List<Genre> {
@@ -81,7 +81,7 @@ class DetailTvShowActivity : AppCompatActivity() {
     }
 
     private fun observeApi() {
-        detailTvShowViewModel.genreApi.observe(this, Observer {
+        detailTvShowViewModel.genre().observe(this, Observer {
             when(it.Status){
                 EnumStatus.SUCCESS -> {
                     if(it.data?.genres == null)

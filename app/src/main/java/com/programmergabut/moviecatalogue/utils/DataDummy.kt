@@ -1,5 +1,9 @@
 package com.programmergabut.moviecatalogue.utils
 
+import com.programmergabut.moviecatalogue.data.model.json.genre.Genre
+import com.programmergabut.moviecatalogue.data.model.json.npmovie.Dates
+import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
+import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
 import com.programmergabut.moviecatalogue.data.model.local.Movie
 import com.programmergabut.moviecatalogue.data.model.local.TvShow
 
@@ -9,100 +13,56 @@ import com.programmergabut.moviecatalogue.data.model.local.TvShow
 
 object DataDummy{
 
-    fun generateMovie(): List<Movie>{
-        val listMovie = mutableListOf<Movie>()
+    fun generateMovie(): Resource<NPMovieApi> {
+        val listMovie = mutableListOf<Result>()
 
         listMovie.add(
-            Movie(
-                1, "Ad Astra", 1,
-                "The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils to uncover the truth about a lost expedition that decades before boldly faced emptiness and silence in search of the unknown.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
-                "Science Fiction, Drama", 60, "09/20/2019"
+            Result(
+                false,"/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", mutableListOf(28,878),338762,"en",
+                "Bloodshot", "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.",
+                189.831,"/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", "2020-03-05", "Bloodshot", false, 7.1,
+                2041, 1
             )
         )
 
         listMovie.add(
-            Movie(
-                2, "Underwater", 1,
-                "After an earthquake destroys their underwater station, six researchers must navigate two miles along the dangerous, unknown depths of the ocean floor to make it to safety in a race against time.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg",
-                "Science Fiction, Drama", 64, "09/20/2019"
+            Result(
+                false,"/mUhh8glXvRfRIpX6jiUctEvg4IB.jpg", mutableListOf(28, 35, 878, 10751),454626,"en",
+                "Sonic the Hedgehog", "Based on the global blockbuster videogame franchise from Sega, Sonic the Hedgehog tells the story of the world’s speediest hedgehog as he embraces his new home on Earth. In this live-action adventure comedy, Sonic and his new best friend team up to defend the planet from the evil genius Dr. Robotnik and his plans for world domination.",
+                212.138,"/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg", "2020-02-12", "Sonic the Hedgehog", false,
+                7.5, 3511, 1
             )
         )
 
         listMovie.add(
-            Movie(
-                3, "Sonic the Hedgehog", 1,
-                "Based on the global blockbuster videogame franchise from Sega, Sonic the Hedgehog tells the story of the world’s speediest hedgehog as he embraces his new home on Earth. In this live-action adventure comedy, Sonic and his new best friend team up to defend the planet from the evil genius Dr. Robotnik and his plans for world domination.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg",
-                "Action, Science Fiction, Comedy, Family", 76, "02/14/2020"
+            Result(
+                false,"/ww7eC3BqSbFsyE5H5qMde8WkxJ2.jpg", mutableListOf(28, 27, 878, 53),443791,"en",
+                "Underwater", "After an earthquake destroys their underwater station, six researchers must navigate two miles along the dangerous, unknown depths of the ocean floor to make it to safety in a race against time.",
+                137.602,"/gzlbb3yeVISpQ3REd3Ga1scWGTU.jpg", "2020-01-08", "Underwater", false,
+                6.4, 1000, 1
             )
         )
 
         listMovie.add(
-            Movie(
-                4, "Bad Boys for Life", 1,
-                "Marcus and Mike are forced to confront new threats, career changes, and midlife crises as they join the newly created elite team AMMO of the Miami police department to take down the ruthless Armando Armas, the vicious leader of a Miami drug cartel.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y95lQLnuNKdPAzw9F9Ab8kJ80c3.jpg",
-                "Thriller, Action, Crime\n", 72, "01/17/2020"
+            Result(
+                false,"/TU9NIjwzjoKPwQHoHshkFcQUCG.jpg", mutableListOf(35, 18, 53),496243,"en",
+                "기생충", "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+                110.915,"/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg", "2019-05-30", "Parasite", false,
+                8.5, 6913, 1
             )
         )
 
         listMovie.add(
-            Movie(
-                5, "Star Wars: The Rise of Skywalker", 1,
-                "The surviving Resistance faces the First Order once again as the journey of Rey, Finn and Poe Dameron continues. With the power and knowledge of generations behind them, the final battle begins.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/db32LaOibwEliAmSL2jjDF6oDdj.jpg",
-                "Action, Adventure, Science Fiction", 65, "12/20/2019"
+            Result(
+                false,"/TU9NIjwzjoKPwQHoHshkFcQUCG.jpg", mutableListOf(35, 18, 53),496243,"en",
+                "기생충", "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+                110.915,"/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg", "2019-05-30", "Parasite", false,
+                8.5, 6913, 1
             )
         )
 
-        listMovie.add(
-            Movie(
-                6, "Bloodshot", 1,
-                "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg",
-                "Action, Science Fiction", 72, "03/13/2020"
-            )
-        )
 
-        listMovie.add(
-            Movie(
-                7, "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn)", 1,
-                "Harley Quinn joins forces with a singer, an assassin and a police detective to help a young girl who had a hit placed on her after she stole a rare diamond from a crime lord.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/h4VB6m0RwcicVEZvzftYZyKXs6K.jpg",
-                "Action, Crime, Comedy", 72, "02/07/2020"
-            )
-        )
-
-        listMovie.add(
-            Movie(
-                8, "Jumanji: The Next Level)", 1,
-                "As the gang return to Jumanji to rescue one of their own, they discover that nothing is as they expect. The players will have to brave parts unknown and unexplored in order to escape the world’s most dangerous game.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/bB42KDdfWkOvmzmYkmK58ZlCa9P.jpg",
-                "Adventure, Comedy, Fantasy", 69, "12/13/2019"
-            )
-        )
-
-        listMovie.add(
-            Movie(
-                9, "Mortal Kombat Legends: Scorpion’s Revenge", 1,
-                "After the vicious slaughter of his family by stone-cold mercenary Sub-Zero, Hanzo Hasashi is exiled to the torturous Netherrealm. There, in exchange for his servitude to the sinister Quan Chi, he’s given a chance to avenge his family – and is resurrected as Scorpion, a lost soul bent on revenge. Back on Earthrealm, Lord Raiden gathers a team of elite warriors – Shaolin monk Liu Kang, Special Forces officer Sonya Blade and action star Johnny Cage – an unlikely band of heroes with one chance to save humanity. To do this, they must defeat Shang Tsung’s horde of Outworld gladiators and reign over the Mortal Kombat tournament.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/4VlXER3FImHeFuUjBShFamhIp9M.jpg",
-                "Fantasy, Action, Adventure, Animation", 85, "04/12/2020"
-            )
-        )
-
-        listMovie.add(
-            Movie(
-                10, "Onward", 1,
-                "In a suburban fantasy world, two teenage elf brothers embark on an extraordinary quest to discover if there is still a little magic left out there.",
-                "https://image.tmdb.org/t/p/w600_and_h900_bestv2/f4aul3FyD3jv3v4bul1IrkWZvzq.jpg",
-                "Animation, Family, Adventure, Comedy, Fantasy", 80, "03/06/2020"
-            )
-        )
-
-        return listMovie
+        return Resource.success(NPMovieApi(Dates("2020-05-03", "2020-03-16"), 1, listMovie, 774, 39))
     }
 
     fun generateTvShow(): List<TvShow>{

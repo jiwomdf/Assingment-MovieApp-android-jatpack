@@ -37,11 +37,11 @@ class MovieFragment : Fragment() {
         initAdapter(mvAdapter)
         observeApi()
 
-        viewModel.fetchNowPlayingMovie()
+        viewModel.getNPMovie()
     }
 
     private fun observeApi() {
-        viewModel.npMovieApi.observe(this, Observer {
+        viewModel.getNPMovie().observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {

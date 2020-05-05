@@ -16,22 +16,6 @@ import kotlinx.coroutines.launch
 
 class TvShowViewModel(private val repository: MCRepository): ViewModel() {
 
-    val oaTvShowApi = MutableLiveData<Resource<OATvShowApi>>()
+    fun oaTvShow() = repository.getOATvShow()
 
-    init {
-        oaTvShowApi.postValue(Resource.loading(null))
-    }
-
-    fun getTvShow() = DataDummy.generateTvShow()
-
-    fun fetchOnAirTvShow() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                oaTvShowApi.postValue(Resource.success(repository.fetchOATvShowApi()))
-            }
-            catch (ex: Exception){
-                oaTvShowApi.postValue(Resource.error(ex.message.toString(), null))
-            }
-        }
-    }
 }

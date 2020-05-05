@@ -10,6 +10,10 @@ import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowViewModel
 import com.programmergabut.moviecatalogue.ui.movie.MovieFragmentViewModel
 import com.programmergabut.moviecatalogue.ui.tvshow.TvShowViewModel
 
+/*
+ *  Created by Katili Jiwo Adi Wiyono on 04/05/20.
+ */
+
 class ViewModelFactory(private val repository: MCRepository): ViewModelProvider.NewInstanceFactory() {
 
     companion object {

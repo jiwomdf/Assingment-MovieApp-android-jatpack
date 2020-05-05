@@ -11,10 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result
-import com.programmergabut.moviecatalogue.ui.movie.MovieAdapter
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.fragment_list_movie.*
 import kotlinx.android.synthetic.main.fragment_tv_show.*
 
 /*
@@ -39,11 +37,11 @@ class TvShowFragment : Fragment() {
         initAdapter(tvShowAdapter)
         observeApi()
 
-        viewModel.fetchOnAirTvShow()
+        viewModel.oaTvShow()
     }
 
     private fun observeApi() {
-        viewModel.oaTvShowApi.observe(this, Observer {
+        viewModel.oaTvShow().observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {
