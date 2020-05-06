@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result
 import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowActivity
+import com.programmergabut.moviecatalogue.utils.EnumConfig
 import kotlinx.android.synthetic.main.layout_tvshow.view.*
 
 /*
@@ -42,13 +43,13 @@ class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
                 tv_tvshow_title.text = tvShow.name
                 tv_tvshow_overview.text = if(tvShow.overview.length > 150) tvShow.overview.substring(0,150) else tvShow.overview
                 Glide.with(context)
-                    .load(tvShow.backdropPath) //karena image terlalu besar, glide menjadi lama untuk load datanya
+                    .load(EnumConfig.imgBaseUrl + tvShow.backdropPath)
                     .centerCrop()
                     .into(iv_tvshow)
 
                 val b = initBundle(tvShow.id, tvShow.name,
                     tvShow.firstAirDate, tvShow.overview, tvShow.voteCount,
-                    tvShow.genreIds as ArrayList<Int>)
+                    tvShow.posterPath, tvShow.genreIds as ArrayList<Int>)
 
                 setOnClickListener {
                     val intent = Intent(context, DetailTvShowActivity::class.java).apply {
@@ -65,6 +66,7 @@ class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
             tvShowReleaseDate: String,
             tvShowOverview: String,
             tvShowVoteCount: Int,
+            tvShowImageUrl: String,
             tvShowGenreID: ArrayList<Int>
         ): Bundle {
             val bundle = Bundle()
@@ -73,6 +75,7 @@ class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
             bundle.putString("tvShow_releaseDate", tvShowReleaseDate)
             bundle.putString("tvShow_overview", tvShowOverview)
             bundle.putInt("tvShow_voteCount", tvShowVoteCount)
+            bundle.putString("tvShow_imgUrl", tvShowImageUrl)
             bundle.putIntegerArrayList("tvShow_genreId", tvShowGenreID)
 
             return bundle

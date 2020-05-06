@@ -5,8 +5,10 @@ class EnumConfig {
     companion object{
 
         /* Show Type */
-        val typeMovie = 1
-        val typeTvShow = 2
+        const val typeMovie = 1
+        const val typeTvShow = 2
 
+        /* poster folder url */
+        const val imgBaseUrl = "https://image.tmdb.org/t/p/w300"
     }
 }

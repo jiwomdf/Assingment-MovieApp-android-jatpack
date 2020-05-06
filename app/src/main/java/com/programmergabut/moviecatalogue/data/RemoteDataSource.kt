@@ -25,7 +25,7 @@ class RemoteDataSource {
     //https://api.themoviedb.org/3/tv/on_the_air?api_key={apiKey}&language=en-US&page=1
 
     private val strApi = "https://api.themoviedb.org/3/"
-    private val apiKey = "bcfe8d2c5ce0d14c7d32c648a1b3679d"
+    private val apiKey = ""
     private val language = "en-US"
     private val page = "1"
 

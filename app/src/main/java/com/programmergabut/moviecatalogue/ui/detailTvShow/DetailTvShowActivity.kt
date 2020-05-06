@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.genre.Genre
 import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
+import com.programmergabut.moviecatalogue.utils.EnumConfig
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_detail_tv_show.*
@@ -27,6 +28,7 @@ class DetailTvShowActivity : AppCompatActivity() {
     private var tvShowReleaseDate: String? = null
     private var tvShowOverview: String? = null
     private var tvShowVoteCount: Int? = null
+    private var tvShowImgUrl: String? = null
     private var tvShowGenreID: ArrayList<Int>? = null
 
 
@@ -114,7 +116,7 @@ class DetailTvShowActivity : AppCompatActivity() {
 
     private fun bindView() {
         Glide.with(this)
-            .load("https://geo0.ggpht.com/cbk?panoid=dwnQ4AmNaeQTwcWAiAPbSw&output=thumbnail&cb_client=search.gws-prod.gps&thumb=2&yaw=141.86023&pitch=0&thumbfov=100&w=227&h=160") //karena image terlalu besar, glide menjadi lama untuk load datanya
+            .load(EnumConfig.imgBaseUrl + tvShowImgUrl)
             .centerCrop()
             .into(iv_detail_tvShow)
 
@@ -133,6 +135,7 @@ class DetailTvShowActivity : AppCompatActivity() {
             tvShowOverview = bundle?.getString("tvShow_overview")
             tvShowVoteCount = bundle?.getInt("tvShow_voteCount")
             tvShowGenreID = bundle?.getIntegerArrayList("tvShow_genreId")
+            tvShowImgUrl = bundle?.getString("tvShow_imgUrl")
 
             true
         } catch(ex: Exception){

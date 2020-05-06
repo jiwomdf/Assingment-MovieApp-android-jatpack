@@ -28,6 +28,12 @@ import org.junit.Test
 
 class MainActivityTest{
 
+    /*
+        note:
+        entah kenapa loadTvShowDetail() suka error,
+        tetapi juga suka berhasil
+    */
+
     private val dummyMovie = DataDummy.generateMovie()
     private val dummyTvShow = DataDummy.generateTvShow()
 

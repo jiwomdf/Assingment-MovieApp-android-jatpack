@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.genre.Genre
+import com.programmergabut.moviecatalogue.utils.EnumConfig
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_detail_movie.*
@@ -29,6 +30,7 @@ class DetailMovieActivity : AppCompatActivity() {
     private var movieReleaseDate: String? = null
     private var movieOverview: String? = null
     private var movieVoteCount: Int? = null
+    private var movieImgUrl: String? = null
     private var movieGenreID: ArrayList<Int>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +116,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private fun bindView() {
         Glide.with(this)
-            .load("https://geo0.ggpht.com/cbk?panoid=dwnQ4AmNaeQTwcWAiAPbSw&output=thumbnail&cb_client=search.gws-prod.gps&thumb=2&yaw=141.86023&pitch=0&thumbfov=100&w=227&h=160") //karena image terlalu besar, glide menjadi lama untuk load datanya
+            .load(EnumConfig.imgBaseUrl + movieImgUrl)
             .centerCrop()
             .into(iv_detail_movie)
 
@@ -133,6 +135,7 @@ class DetailMovieActivity : AppCompatActivity() {
             movieReleaseDate = bundle?.getString("movie_releaseDate")
             movieOverview = bundle?.getString("movie_overview")
             movieVoteCount = bundle?.getInt("movie_voteCount")
+            movieImgUrl = bundle?.getString("movie_imgUrl")
             movieGenreID = bundle?.getIntegerArrayList("movie_genreId")
 
             true

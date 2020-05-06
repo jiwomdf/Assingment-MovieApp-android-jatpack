@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
 import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
+import com.programmergabut.moviecatalogue.utils.EnumConfig
 import kotlinx.android.synthetic.main.layout_movie.view.*
 
 /*
@@ -45,7 +46,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
                 tv_movie_overview.text = if(movie.overview.length > 150) movie.overview.substring(0,150) else movie.overview
 
                 Glide.with(context)
-                    .load(movie.posterPath) //karena image terlalu besar, glide menjadi lama untuk load datanya
+                    .load(EnumConfig.imgBaseUrl + movie.posterPath)
                     .centerCrop()
                     .into(iv_movie)
 
@@ -53,7 +54,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
 
                     val b = initBundle(movie.id, movie.title,
                         movie.releaseDate, movie.overview, movie.voteCount,
-                        movie.genreIds as ArrayList<Int>)
+                        movie.posterPath, movie.genreIds as ArrayList<Int>)
 
                     val intent = Intent(context, DetailMovieActivity::class.java).apply {
                         putExtra(DetailMovieActivity.bundleMovieDetail, b)
@@ -69,6 +70,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
            movieReleaseDate: String,
            movieOverview: String,
            movieVoteCount: Int,
+           movieImgUrl: String,
            movieGenreID: ArrayList<Int>
         ): Bundle {
             val bundle = Bundle()
@@ -77,6 +79,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
             bundle.putString("movie_releaseDate", movieReleaseDate)
             bundle.putString("movie_overview", movieOverview)
             bundle.putInt("movie_voteCount", movieVoteCount)
+            bundle.putString("movie_imgUrl", movieImgUrl)
             bundle.putIntegerArrayList("movie_genreId", movieGenreID)
 
             return bundle
