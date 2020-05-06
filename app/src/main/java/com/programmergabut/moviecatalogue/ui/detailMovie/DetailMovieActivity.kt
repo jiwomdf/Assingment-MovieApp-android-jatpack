@@ -66,7 +66,7 @@ class DetailMovieActivity : AppCompatActivity() {
         var strGenre = ""
         listGenre.forEachIndexed {idx, x ->
             if(idx == listGenre.size - 1)
-                strGenre += "${x.name} "
+                strGenre += x.name
             else
                 strGenre += "${x.name}, "
         }
@@ -94,11 +94,11 @@ class DetailMovieActivity : AppCompatActivity() {
 
     private fun bindGenre(it: List<Genre>) {
         pb_detail_genere.visibility = View.GONE
-        tv_detail_genere.visibility = View.VISIBLE
+        tv_detail_genre_movie.visibility = View.VISIBLE
 
         val listGenre = genreFilter(it)
         val strGenre = genreMaker(listGenre)
-        tv_detail_genere.text = strGenre
+        tv_detail_genre_movie.text = strGenre
     }
 
     private fun initVariable() {
@@ -116,12 +116,12 @@ class DetailMovieActivity : AppCompatActivity() {
         Glide.with(this)
             .load("https://geo0.ggpht.com/cbk?panoid=dwnQ4AmNaeQTwcWAiAPbSw&output=thumbnail&cb_client=search.gws-prod.gps&thumb=2&yaw=141.86023&pitch=0&thumbfov=100&w=227&h=160") //karena image terlalu besar, glide menjadi lama untuk load datanya
             .centerCrop()
-            .into(iv_detail)
+            .into(iv_detail_movie)
 
-        tv_detail_ect.text = "Release Date : $movieReleaseDate"
-        tv_detail_title.text = movieTitle
-        tv_detail_overview.text = movieOverview
-        tv_detail_score.text = "Vote Count : $movieVoteCount"
+        tv_detail_ect_movie.text = "Release Date : $movieReleaseDate"
+        tv_detail_title_movie.text = movieTitle
+        tv_detail_overview_movie.text = movieOverview
+        tv_detail_score_movie.text = "Vote Count : $movieVoteCount"
         //tv_detail_genere.text = movieGenreID?.get(0).toString()
     }
 

@@ -60,6 +60,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
 
+    //espresso idling source
+    implementation "androidx.test.espresso:espresso-idling-resource:$idleResourceVersion"
 
     //Unit Testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

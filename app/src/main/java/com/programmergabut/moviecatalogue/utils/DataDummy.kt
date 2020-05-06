@@ -24,19 +24,19 @@ object DataDummy{
 
         listMovie.add(
             Result(
-                false,"/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", mutableListOf(28,878),338762,"en",
-                "Bloodshot", "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.",
-                189.831,"/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", "2020-03-05", "Bloodshot", false, 7.1,
-                2041, 1
+                false,"/mUhh8glXvRfRIpX6jiUctEvg4IB.jpg", mutableListOf(28, 35, 878, 10751),454626,"en",
+                "Sonic the Hedgehog", "Based on the global blockbuster videogame franchise from Sega, Sonic the Hedgehog tells the story of the world’s speediest hedgehog as he embraces his new home on Earth. In this live-action adventure comedy, Sonic and his new best friend team up to defend the planet from the evil genius Dr. Robotnik and his plans for world domination.",
+                212.138,"/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg", "2020-02-12", "Sonic the Hedgehog", false,
+                7.5, 3511, 1
             )
         )
 
         listMovie.add(
             Result(
-                false,"/mUhh8glXvRfRIpX6jiUctEvg4IB.jpg", mutableListOf(28, 35, 878, 10751),454626,"en",
-                "Sonic the Hedgehog", "Based on the global blockbuster videogame franchise from Sega, Sonic the Hedgehog tells the story of the world’s speediest hedgehog as he embraces his new home on Earth. In this live-action adventure comedy, Sonic and his new best friend team up to defend the planet from the evil genius Dr. Robotnik and his plans for world domination.",
-                212.138,"/aQvJ5WPzZgYVDrxLX4R6cLJCEaQ.jpg", "2020-02-12", "Sonic the Hedgehog", false,
-                7.5, 3511, 1
+                false,"/ocUrMYbdjknu2TwzMHKT9PBBQRw.jpg", mutableListOf(28,878),338762,"en",
+                "Bloodshot", "After he and his wife are murdered, marine Ray Garrison is resurrected by a team of scientists. Enhanced with nanotechnology, he becomes a superhuman, biotech killing machine—'Bloodshot'. As Ray first trains with fellow super-soldiers, he cannot recall anything from his former life. But when his memories flood back and he remembers the man that killed both him and his wife, he breaks out of the facility to get revenge, only to discover that there's more to the conspiracy than he thought.",
+                189.831,"/8WUVHemHFH2ZIP6NWkwlHWsyrEL.jpg", "2020-03-05", "Bloodshot", false, 7.1,
+                2041, 1
             )
         )
 
@@ -51,19 +51,19 @@ object DataDummy{
 
         listMovie.add(
             Result(
-                false,"/TU9NIjwzjoKPwQHoHshkFcQUCG.jpg", mutableListOf(35, 18, 53),496243,"en",
-                "기생충", "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
-                110.915,"/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg", "2019-05-30", "Parasite", false,
-                8.5, 6913, 1
+                false,"/x80ZIVGUJ6plcUBcgVZ6DPKT7vc.jpg", mutableListOf( 14, 27, 878),539537,"en",
+                "Fantasy Island", "A group of contest winners arrive at an island hotel to live out their dreams, only to find themselves trapped in nightmare scenarios.",
+                139.542,"/8ZMrZGGW65ePWIgRn1260nA1uUm.jpg", "2020-02-12", "Fantasy Island", false,
+                6.0, 570, 1
             )
         )
 
         listMovie.add(
             Result(
-                false,"/TU9NIjwzjoKPwQHoHshkFcQUCG.jpg", mutableListOf(35, 18, 53),496243,"en",
-                "기생충", "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
-                110.915,"/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg", "2019-05-30", "Parasite", false,
-                8.5, 6913, 1
+                false,"/9sXHqZTet3Zg5tgcc0hCDo8Tn35.jpg", mutableListOf( 12, 18, 10751),481848,"en",
+                "The Call of the Wild", "Buck is a big-hearted dog whose blissful domestic life is turned upside down when he is suddenly uprooted from his California home and transplanted to the exotic wilds of the Yukon during the Gold Rush of the 1890s. As the newest rookie on a mail delivery dog sled team—and later its leader—Buck experiences the adventure of a lifetime, ultimately finding his true place in the world and becoming his own master.",
+                166.974,"/33VdppGbeNxICrFUtW2WpGHvfYc.jpg", "2020-02-19", "The Call of the Wild", false,
+                7.2, 776, 1
             )
         )
 
@@ -104,10 +104,10 @@ object DataDummy{
         )))
 
         listTvShow.add((com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result(
-            "/jFclWhCwbW6r7ecQ3vF83QXnEWJ.jpg", "2016-01-17", mutableListOf(18),
-            62852, "Billions", mutableListOf("US"), "en", "HBO",
-            "A complex drama about power politics in the world of New York high finance. \\n\\nShrewd, savvy U.S. Attorney Chuck Rhoades and the brilliant, ambitious hedge fund king Bobby \\\"Axe\\\" Axelrod are on an explosive collision course, with each using all of his considerable smarts, power and influence to outmaneuver the other. The stakes are in the billions in this timely, provocative series.",
-            80.893, "/lbIMe94gXNGBzlFACqbrUyEXpyN.jpg", 7.7, 343
+            "/9hvhGtcsGhQY58pukw8w55UEUbL.jpg", "2017-01-26", mutableListOf(18),
+            69050, "Riverdale", mutableListOf("US"), "en", "Riverdale",
+            "Set in the present, the series offers a bold, subversive take on Archie, Betty, Veronica and their friends, exploring the surreality of small-town life, the darkness and weirdness bubbling beneath Riverdale’s wholesome facade.",
+            82.418, "/4X7o1ssOEvp4BFLim1AZmPNcYbU.jpg", 8.3, 2135
         )))
 
 

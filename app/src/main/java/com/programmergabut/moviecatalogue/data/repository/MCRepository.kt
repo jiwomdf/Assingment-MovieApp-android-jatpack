@@ -5,6 +5,7 @@ import com.programmergabut.moviecatalogue.data.RemoteDataSource
 import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
+import com.programmergabut.moviecatalogue.utils.EspressoIdlingResource
 import com.programmergabut.moviecatalogue.utils.Resource
 import com.programmergabut.moviecatalogue.utils.Resource.Companion.error
 import com.programmergabut.moviecatalogue.utils.Resource.Companion.success
@@ -34,12 +35,14 @@ class MCRepository(private val remoteDataSource: RemoteDataSource) {
         val result = MutableLiveData<Resource<NPMovieApi>>()
 
         CoroutineScope(Dispatchers.Default).launch{
+            EspressoIdlingResource.increment()
             try {
                 result.postValue(success(remoteDataSource.fetchNPMovieApi()))
             }
             catch (ex: Exception){
                 result.postValue(error(ex.message.toString(), null))
             }
+            EspressoIdlingResource.decrement()
         }
 
         return result
@@ -49,12 +52,14 @@ class MCRepository(private val remoteDataSource: RemoteDataSource) {
         val result = MutableLiveData<Resource<OATvShowApi>>()
 
         CoroutineScope(Dispatchers.Default).launch{
+            EspressoIdlingResource.increment()
             try {
                 result.postValue(success(remoteDataSource.fetchOATvShowApi()))
             }
             catch (ex: Exception){
                 result.postValue(error(ex.message.toString(), null))
             }
+            EspressoIdlingResource.decrement()
         }
 
         return result
@@ -64,12 +69,14 @@ class MCRepository(private val remoteDataSource: RemoteDataSource) {
         val result = MutableLiveData<Resource<GenreApi>>()
 
         CoroutineScope(Dispatchers.Default).launch{
+            EspressoIdlingResource.increment()
             try {
                 result.postValue(success(remoteDataSource.fetchGenreApi()))
             }
             catch (ex: Exception){
                 result.postValue(error(ex.message.toString(), null))
             }
+            EspressoIdlingResource.decrement()
         }
 
         return result

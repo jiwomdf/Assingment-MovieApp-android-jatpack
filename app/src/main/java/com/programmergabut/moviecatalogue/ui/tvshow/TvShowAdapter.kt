@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result
 import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
+import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowActivity
+import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowViewModel
 import kotlinx.android.synthetic.main.layout_tvshow.view.*
 
 /*
@@ -51,8 +53,8 @@ class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
                     tvShow.genreIds as ArrayList<Int>)
 
                 setOnClickListener {
-                    val intent = Intent(context, DetailMovieActivity::class.java).apply {
-                        putExtra(DetailMovieActivity.bundleMovieDetail, b)
+                    val intent = Intent(context, DetailTvShowActivity::class.java).apply {
+                        putExtra(DetailTvShowActivity.bundleMovieDetail, b)
                     }
                     context.startActivity(intent)
                 }
@@ -60,20 +62,20 @@ class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
         }
 
         private fun initBundle(
-            movieID: Int,
-            movieTitle: String,
-            movieReleaseDate: String,
-            movieOverview: String,
-            movieVoteCount: Int,
-            movieGenreID: ArrayList<Int>
+            tvShowID: Int,
+            tvShowTitle: String,
+            tvShowReleaseDate: String,
+            tvShowOverview: String,
+            tvShowVoteCount: Int,
+            tvShowGenreID: ArrayList<Int>
         ): Bundle {
             val bundle = Bundle()
-            bundle.putInt("movie_id", movieID)
-            bundle.putString("movie_title", movieTitle)
-            bundle.putString("movie_releaseDate", movieReleaseDate)
-            bundle.putString("movie_overview", movieOverview)
-            bundle.putInt("movie_voteCount", movieVoteCount)
-            bundle.putIntegerArrayList("movie_genreId", movieGenreID)
+            bundle.putInt("tvShow_id", tvShowID)
+            bundle.putString("tvShow_title", tvShowTitle)
+            bundle.putString("tvShow_releaseDate", tvShowReleaseDate)
+            bundle.putString("tvShow_overview", tvShowOverview)
+            bundle.putInt("tvShow_voteCount", tvShowVoteCount)
+            bundle.putIntegerArrayList("tvShow_genreId", tvShowGenreID)
 
             return bundle
         }

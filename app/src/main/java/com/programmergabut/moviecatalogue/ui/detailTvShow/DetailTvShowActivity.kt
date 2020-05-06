@@ -12,13 +12,7 @@ import com.programmergabut.moviecatalogue.data.model.json.genre.Genre
 import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
-import kotlinx.android.synthetic.main.activity_detail_tv_show.iv_detail
-import kotlinx.android.synthetic.main.activity_detail_tv_show.pb_detail_genere
-import kotlinx.android.synthetic.main.activity_detail_tv_show.tv_detail_ect
-import kotlinx.android.synthetic.main.activity_detail_tv_show.tv_detail_genere
-import kotlinx.android.synthetic.main.activity_detail_tv_show.tv_detail_overview
-import kotlinx.android.synthetic.main.activity_detail_tv_show.tv_detail_score
-import kotlinx.android.synthetic.main.activity_detail_tv_show.tv_detail_title
+import kotlinx.android.synthetic.main.activity_detail_tv_show.*
 import java.lang.Exception
 
 class DetailTvShowActivity : AppCompatActivity() {
@@ -72,7 +66,7 @@ class DetailTvShowActivity : AppCompatActivity() {
         var strGenre = ""
         listGenre.forEachIndexed {idx, x ->
             if(idx == listGenre.size - 1)
-                strGenre += "${x.name} "
+                strGenre += x.name
             else
                 strGenre += "${x.name}, "
         }
@@ -100,11 +94,11 @@ class DetailTvShowActivity : AppCompatActivity() {
 
     private fun bindGenre(it: List<Genre>) {
         pb_detail_genere.visibility = View.GONE
-        tv_detail_genere.visibility = View.VISIBLE
+        tv_detail_genre_tvShow.visibility = View.VISIBLE
 
         val listGenre = genreFilter(it)
         val strGenre = genreMaker(listGenre)
-        tv_detail_genere.text = strGenre
+        tv_detail_genre_tvShow.text = strGenre
     }
 
     private fun initVariable() {
@@ -122,13 +116,12 @@ class DetailTvShowActivity : AppCompatActivity() {
         Glide.with(this)
             .load("https://geo0.ggpht.com/cbk?panoid=dwnQ4AmNaeQTwcWAiAPbSw&output=thumbnail&cb_client=search.gws-prod.gps&thumb=2&yaw=141.86023&pitch=0&thumbfov=100&w=227&h=160") //karena image terlalu besar, glide menjadi lama untuk load datanya
             .centerCrop()
-            .into(iv_detail)
+            .into(iv_detail_tvShow)
 
-        tv_detail_ect.text = "Release Date : $tvShowReleaseDate"
-        tv_detail_title.text = tvShowTitle
-        tv_detail_overview.text = tvShowOverview
-        tv_detail_score.text = "Vote Count : $tvShowVoteCount"
-        //tv_detail_genere.text = movieGenreID?.get(0).toString()
+        tv_detail_ect_tvShow.text = "Release Date : $tvShowReleaseDate"
+        tv_detail_title_tvShow.text = tvShowTitle
+        tv_detail_overview_tvShow.text = tvShowOverview
+        tv_detail_score_tvShow.text = "Vote Count : $tvShowVoteCount"
     }
 
     private fun deserializeBundle(bundle: Bundle?): Boolean {

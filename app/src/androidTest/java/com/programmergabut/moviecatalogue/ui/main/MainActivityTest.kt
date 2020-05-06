@@ -3,6 +3,7 @@ package com.programmergabut.moviecatalogue.ui.main
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
@@ -14,7 +15,10 @@ import androidx.test.rule.ActivityTestRule
 import com.google.android.material.tabs.TabLayout
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.utils.DataDummy
+import com.programmergabut.moviecatalogue.utils.EspressoIdlingResource
 import org.hamcrest.CoreMatchers.allOf
+import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,83 +28,88 @@ import org.junit.Test
 
 class MainActivityTest{
 
-    /*  Scenario
-
-        1. load movie
-        a. check if rv_listMovie displayed
-        b. scroll to the end of the recyclerview data
-
-        2. load movie detail
-        a. click the last rv_listMovie data
-        b. check if iv_detail, tv_detail_title, tv_detail_score, tv_detail_ect, tv_detail_genere, tv_detail_overview displayed
-        c. check if iv_detail, tv_detail_title, tv_detail_score, tv_detail_ect, tv_detail_genere, tv_detail_overview value equal to the dummy data
-
-        3. load tvShow
-        a. check if rv_listTvShow displayed
-        b. scroll to sthe end of the recyclerview data
-
-        4. load tvShow detail
-        a. click the last rv_listTvShow data
-        b. check if iv_detail, tv_detail_title, tv_detail_score, tv_detail_ect, tv_detail_genere, tv_detail_overview displayed
-        c. check if iv_detail, tv_detail_title, tv_detail_score, tv_detail_ect, tv_detail_genere, tv_detail_overview value equal to the dummy data
-     */
-
-
     private val dummyMovie = DataDummy.generateMovie()
     private val dummyTvShow = DataDummy.generateTvShow()
 
     @get:Rule
     var activityRule = ActivityTestRule(MainActivity::class.java)
 
+    @Before
+    fun setUp() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.espressoTestIdlingResource)
+    }
+
+    @After
+    fun tearDown() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.espressoTestIdlingResource)
+    }
+
+
     @Test
     fun loadMovie(){
         onView(withId(R.id.rv_listMovie)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_listMovie)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovie.size - 1))
+        onView(withId(R.id.rv_listMovie)).perform(RecyclerViewActions
+            .scrollToPosition<RecyclerView.ViewHolder>(dummyMovie.data?.results?.size!! - 1))
     }
 
     @Test
     fun loadMovieDetail(){
-        onView(withId(R.id.rv_listMovie)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyMovie.size - 1, click()))
 
-        onView(withId(R.id.iv_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_score)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_ect)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genere)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview)).check(matches(isDisplayed()))
+        val dummyDataSize = dummyMovie.data?.results?.size!!
+        val dummyDataList = dummyMovie.data?.results!!
+        val tempGenre = "Adventure, Drama, Family"
+
+        onView(withId(R.id.rv_listMovie)).perform(RecyclerViewActions
+            .actionOnItemAtPosition<RecyclerView.ViewHolder>( dummyDataSize - 1, click()))
+
+        onView(withId(R.id.iv_detail_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_title_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_score_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_ect_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_genre_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_overview_movie)).check(matches(isDisplayed()))
 
         //onView(withId(R.id.iv_detail)).check(matches(withText(dummyMovie[dummyMovie.size - 1].imgUrl)))
-        onView(withId(R.id.tv_detail_title)).check(matches(withText(dummyMovie[dummyMovie.size - 1].title)))
-        onView(withId(R.id.tv_detail_score)).check(matches(withText("Score : " + dummyMovie[dummyMovie.size - 1].score)))
-        onView(withId(R.id.tv_detail_ect)).check(matches(withText("Release Date : " + dummyMovie[dummyMovie.size - 1].releaseDate)))
-        onView(withId(R.id.tv_detail_genere)).check(matches(withText(dummyMovie[dummyMovie.size - 1].genere)))
-        onView(withId(R.id.tv_detail_overview)).check(matches(withText(dummyMovie[dummyMovie.size - 1].overview)))
+        onView(withId(R.id.tv_detail_title_movie)).check(matches(withText(dummyDataList[dummyDataSize - 1].title)))
+        onView(withId(R.id.tv_detail_score_movie)).check(matches(withText("Vote Count : " + dummyDataList[dummyDataSize - 1].voteCount)))
+        onView(withId(R.id.tv_detail_ect_movie)).check(matches(withText("Release Date : " + dummyDataList[dummyDataSize - 1].releaseDate)))
+        onView(withId(R.id.tv_detail_genre_movie)).check(matches(withText(tempGenre)))
+        onView(withId(R.id.tv_detail_overview_movie)).check(matches(withText(dummyDataList[dummyDataSize - 1].overview)))
     }
 
     @Test
     fun loadTvShow(){
+        val dummyDataSize = dummyTvShow.data?.results?.size!!
+
         onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
-        onView(withId(R.id.rv_listTvShow)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyTvShow.size - 1, click()))
+        onView(withId(R.id.rv_listTvShow)).perform(RecyclerViewActions
+            .actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyDataSize - 1, click()))
     }
 
     @Test
     fun loadTvShowDetail(){
-        onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
-        onView(withId(R.id.rv_listTvShow)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyTvShow.size - 1, click()))
 
-        onView(withId(R.id.iv_detail)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_title)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_score)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_ect)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genere)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview)).check(matches(isDisplayed()))
+        val dummyDataSize = dummyTvShow.data?.results?.size!!
+        val dummyDataList = dummyTvShow.data?.results!!
+        val tempGenre = "Drama, Mystery"
+
+        onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
+        onView(withId(R.id.rv_listTvShow)).perform(RecyclerViewActions
+            .actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyDataSize - 1, click()))
+
+        onView(withId(R.id.iv_detail_tvShow)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_title_tvShow)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_score_tvShow)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_ect_tvShow)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_genre_tvShow)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_detail_overview_tvShow)).check(matches(isDisplayed()))
 
         //onView(withId(R.id.iv_detail)).check(matches(withText(dummyTvShow[dummyTvShow.size - 1].imgUrl)))
-        onView(withId(R.id.tv_detail_title)).check(matches(withText(dummyTvShow[dummyTvShow.size - 1].title)))
-        onView(withId(R.id.tv_detail_score)).check(matches(withText("Score : " + dummyTvShow[dummyTvShow.size - 1].score)))
-        onView(withId(R.id.tv_detail_ect)).check(matches(withText("Network : " + dummyTvShow[dummyTvShow.size - 1].netWork)))
-        onView(withId(R.id.tv_detail_genere)).check(matches(withText(dummyTvShow[dummyTvShow.size - 1].genere)))
-        onView(withId(R.id.tv_detail_overview)).check(matches(withText(dummyTvShow[dummyTvShow.size - 1].overview)))
+        onView(withId(R.id.tv_detail_title_tvShow)).check(matches(withText(dummyDataList[dummyDataSize - 1].name)))
+        onView(withId(R.id.tv_detail_score_tvShow)).check(matches(withText("Vote Count : " + dummyDataList[dummyDataSize - 1].voteCount)))
+        onView(withId(R.id.tv_detail_ect_tvShow)).check(matches(withText("Release Date : " + dummyDataList[dummyDataSize - 1].firstAirDate)))
+        onView(withId(R.id.tv_detail_genre_tvShow)).check(matches(withText(tempGenre)))
+        onView(withId(R.id.tv_detail_overview_tvShow)).check(matches(withText(dummyDataList[dummyDataSize - 1].overview)))
     }
 
     private fun selectTabAtPosition(tabIndex: Int): ViewAction {
