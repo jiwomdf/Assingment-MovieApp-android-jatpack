@@ -5,13 +5,7 @@ import com.programmergabut.moviecatalogue.data.RemoteDataSource
 import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
-import com.programmergabut.moviecatalogue.utils.EspressoIdlingResource
 import com.programmergabut.moviecatalogue.utils.Resource
-import com.programmergabut.moviecatalogue.utils.Resource.Companion.error
-import com.programmergabut.moviecatalogue.utils.Resource.Companion.success
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /*
  *  Created by Katili Jiwo Adi Wiyono on 03/05/20.

@@ -72,7 +72,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="6dp">
         <ProgressBar
-            android:id="@+id/pb_detail_genere"
+            android:id="@+id/pb_detail_genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            tools:text="tv_detail_genere"
+            tools:text="tv_detail_genre"
             android:textSize="12sp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

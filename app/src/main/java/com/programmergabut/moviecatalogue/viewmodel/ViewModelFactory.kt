@@ -1,6 +1,5 @@
 package com.programmergabut.moviecatalogue.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.programmergabut.moviecatalogue.data.repository.MCRepository

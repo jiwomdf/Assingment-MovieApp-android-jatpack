@@ -9,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result
-import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
 import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowActivity
-import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowViewModel
 import kotlinx.android.synthetic.main.layout_tvshow.view.*
 
 /*

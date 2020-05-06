@@ -83,17 +83,17 @@ class DetailTvShowActivity : AppCompatActivity() {
 
                     bindGenre(it.data.genres)
                 }
-                EnumStatus.LOADING -> pb_detail_genere.visibility = View.VISIBLE
+                EnumStatus.LOADING -> pb_detail_genre.visibility = View.VISIBLE
                 EnumStatus.ERROR -> {
                     Toast.makeText(this, it.message.toString(), Toast.LENGTH_SHORT).show()
-                    pb_detail_genere.visibility = View.GONE
+                    pb_detail_genre.visibility = View.GONE
                 }
             }
         })
     }
 
     private fun bindGenre(it: List<Genre>) {
-        pb_detail_genere.visibility = View.GONE
+        pb_detail_genre.visibility = View.GONE
         tv_detail_genre_tvShow.visibility = View.VISIBLE
 
         val listGenre = genreFilter(it)

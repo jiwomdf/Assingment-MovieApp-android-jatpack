@@ -1,7 +1,6 @@
 package com.programmergabut.moviecatalogue.data.api
 
 import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import retrofit2.http.GET
 import retrofit2.http.Query
 

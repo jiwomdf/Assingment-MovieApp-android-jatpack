@@ -4,16 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
 import com.programmergabut.moviecatalogue.data.repository.MCRepository
 import com.programmergabut.moviecatalogue.utils.DataDummy
 import com.programmergabut.moviecatalogue.utils.Resource
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
-import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
