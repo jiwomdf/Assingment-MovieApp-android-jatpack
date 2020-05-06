@@ -17,18 +17,7 @@ import kotlinx.coroutines.launch
  *  Created by Katili Jiwo Adi Wiyono on 03/05/20.
  */
 
-class MCRepository(private val remoteDataSource: RemoteDataSource) {
-
-
-    companion object {
-        @Volatile
-        private var instance: MCRepository? = null
-
-        fun getInstance(remoteDataSource: RemoteDataSource): MCRepository =
-            instance ?: synchronized(this) {
-                instance ?: MCRepository(remoteDataSource)
-            }
-    }
+class FakeMCRepository(private val remoteDataSource: RemoteDataSource) {
 
 
     fun getNPMovie(): MutableLiveData<Resource<NPMovieApi>> {

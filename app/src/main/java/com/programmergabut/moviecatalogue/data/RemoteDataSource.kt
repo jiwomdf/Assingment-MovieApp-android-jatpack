@@ -7,6 +7,11 @@ import com.programmergabut.moviecatalogue.data.api.OATvShowService
 import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
+import com.programmergabut.moviecatalogue.utils.EspressoIdlingResource
+import com.programmergabut.moviecatalogue.utils.Resource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -36,7 +41,6 @@ class RemoteDataSource {
             }
     }
 
-
     private fun getNowPlayingMovieApi(): NPMovieService{
         return Retrofit.Builder()
             .baseUrl(strApi)
@@ -61,10 +65,62 @@ class RemoteDataSource {
             .create(GenreService::class.java)
     }
 
-    suspend fun fetchNPMovieApi(): NPMovieApi = getNowPlayingMovieApi().fetchNpMovie(apiKey, language, page)
+    private suspend fun fetchNPMovieApi(): NPMovieApi = getNowPlayingMovieApi().fetchNpMovie(apiKey, language, page)
 
-    suspend fun fetchOATvShowApi(): OATvShowApi = getOnAirTvShowApi().fetchOATvShow(apiKey, language, page)
+    private suspend fun fetchOATvShowApi(): OATvShowApi = getOnAirTvShowApi().fetchOATvShow(apiKey, language, page)
 
-    suspend fun fetchGenreApi(): GenreApi = getGenreApi().fetchGenre(apiKey, language)
+    private suspend fun fetchGenreApi(): GenreApi = getGenreApi().fetchGenre(apiKey, language)
 
+
+    fun getNPMovie(callback: LoadMovieCallback) {
+
+        CoroutineScope(Dispatchers.Default).launch{
+            EspressoIdlingResource.increment()
+            try {
+                callback.onReceived(Resource.success(fetchNPMovieApi()))
+            }
+            catch (ex: Exception){
+                callback.onReceived(Resource.error(ex.message.toString(), null))
+            }
+            EspressoIdlingResource.decrement()
+        }
+    }
+
+    fun getOATvShow(callback: LoadTvShowCallback){
+        CoroutineScope(Dispatchers.Default).launch{
+            EspressoIdlingResource.increment()
+            try {
+                callback.onReceived(Resource.success(fetchOATvShowApi()))
+            }
+            catch (ex: Exception){
+                callback.onReceived(Resource.error(ex.message.toString(), null))
+            }
+            EspressoIdlingResource.decrement()
+        }
+    }
+
+    fun getGenre(callback: LoadGenreCallback){
+        CoroutineScope(Dispatchers.Default).launch{
+            EspressoIdlingResource.increment()
+            try {
+                callback.onReceived(Resource.success(fetchGenreApi()))
+            }
+            catch (ex: Exception){
+                callback.onReceived(Resource.error(ex.message.toString(), null))
+            }
+            EspressoIdlingResource.decrement()
+        }
+    }
+
+    interface LoadMovieCallback{
+        fun onReceived(response: Resource<NPMovieApi>)
+    }
+
+    interface LoadTvShowCallback{
+        fun onReceived(response: Resource<OATvShowApi>)
+    }
+
+    interface LoadGenreCallback{
+        fun onReceived(response: Resource<GenreApi>)
+    }
 }

@@ -26,6 +26,7 @@ buildscript {
         archLifecycleVersionTesting = '2.1.0'
         mockitoKotlinVersion = '2.1.0'
         idleResourceVersion = '3.2.0'
+        espressoIdlingResource = "3.0.2"
     }
 }
 
