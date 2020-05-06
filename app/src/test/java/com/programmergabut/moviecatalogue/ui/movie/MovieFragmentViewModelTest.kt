@@ -7,9 +7,6 @@ import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.repository.MCRepository
 import com.programmergabut.moviecatalogue.utils.DataDummy
 import com.programmergabut.moviecatalogue.utils.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -50,19 +47,14 @@ class MovieFragmentViewModelTest {
         val movie = MutableLiveData<Resource<NPMovieApi>>()
         movie.value = dummyMovie
 
+        `when`(mcrRepository.getNPMovie()).thenReturn(movie)
 
-        `when`(viewModel.npMovieApi).thenReturn(movie)
-
-        val movieRetval = viewModel.npMovieApi
-        CoroutineScope(Dispatchers.Default).launch {
-            verify(mcrRepository).fetchNPMovieApi()
-        }
+        val movieRetval = viewModel.nPMovie()
+        verify(mcrRepository).getNPMovie()
         assertNotNull(movieRetval)
-        assertEquals(20, movieRetval.value?.data?.results?.size)
+        assertEquals(5, movieRetval.value?.data?.results?.size)
 
-        viewModel.npMovieApi.observeForever(observer)
+        viewModel.nPMovie().observeForever(observer)
         verify(observer).onChanged(dummyMovie)
-
-
     }
 }

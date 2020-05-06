@@ -4,6 +4,7 @@ import com.programmergabut.moviecatalogue.data.model.json.genre.Genre
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.Dates
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
+import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
 import com.programmergabut.moviecatalogue.data.model.local.Movie
 import com.programmergabut.moviecatalogue.data.model.local.TvShow
 
@@ -12,6 +13,11 @@ import com.programmergabut.moviecatalogue.data.model.local.TvShow
  */
 
 object DataDummy{
+
+    /*
+        Untuk generateMovie & generateTvShow saya hanya mengambil
+        masing - masing 5 data saja, sesuai dengan API
+     */
 
     fun generateMovie(): Resource<NPMovieApi> {
         val listMovie = mutableListOf<Result>()
@@ -65,79 +71,46 @@ object DataDummy{
         return Resource.success(NPMovieApi(Dates("2020-05-03", "2020-03-16"), 1, listMovie, 774, 39))
     }
 
-    fun generateTvShow(): List<TvShow>{
-        val listTvShow = mutableListOf<TvShow>()
+    fun generateTvShow(): Resource<OATvShowApi> {
+        val listTvShow = mutableListOf<com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result>()
 
-        listTvShow.add((TvShow(
-            1, "Thieves of the Wood", 2,
-            "Charismatic highwayman Jan de Lichte leads the oppressed and downtrodden in a revolt against the corrupt aristocracy of 18th-century Belgium.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/jQNOzoiaIQWxJAx8OUighnvnhRA.jpg",
-            "Drama, Action & Adventure, Mystery", 59, "NETFLIX"
+        listTvShow.add((com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result(
+            "/6ZdQTBy20HzWudZthAV7NkZWfIb.jpg", "2014-10-07", mutableListOf(18,10765), 60735,
+            "The Flash", mutableListOf("US"), "en", "The Flash",
+            "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \\\"meta-human\\\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
+            220.57, "/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg", 7.2,4213
         )))
 
-        listTvShow.add((TvShow(
-            2, "My Girlfriend is an Alien", 2,
-            "The alien girl Chai Xiaoqi tells the story of Fang Xiaoqi, the overbearing president of the alien girl who died from the \"Cape Town Planet\", who was suffering from the \"rainy weather heterosexual amnesia\". A high-energy hilarious and romantic cross-star love story. The female host Chai Xiaoqi is not only an alien, but also a true-handed witch. Once she inhales the hormones emitted by the males in the earth, she will fall into the \"flowery state\" and suffer from various diseases. The fun and ridiculously ridiculous romance will restore the singularity of the girl in the perfection of the girl. In order to survive on the human earth, Chai Xiaoqi will use his various super powers to solve one accident after another, like a roller coaster. The ups and downs will make the audience hooked. The male lord is cold and is an alternative overbearing president. When it rains, he will forget the opposite sex that appears around him. For this reason, he and the female host will launch various \"fighting and fighting\" laughter dramas. The experience of high sweetness and romance is expected to be Strongly slammed the girl's heart when it was broadcast.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5e2owvs9TWVsuIacTFxJGPp6KVW.jpg",
-            "Comedy, Sci-Fi & Fantasy", 78, "Tencent Video"
+        listTvShow.add((com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result(
+            "/eV3XnUul4UfIivz3kxgeIozeo50.jpg", "2013-12-02", mutableListOf(16, 35, 10765),
+            60625, "Rick and Morty", mutableListOf("US"), "en", "Rick and Morty",
+            "Rick is a mentally-unbalanced but scientifically-gifted old man who has recently reconnected with his family. He spends most of his time involving his young grandson Morty in dangerous, outlandish adventures throughout space and alternate universes. Compounded with Morty's already unstable family life, these events cause Morty much distress at home and school.",
+            126.141, "/8kOWDBK6XlPUzckuHDo3wwVRFwt.jpg", 8.7, 2230
         )))
 
-        listTvShow.add((TvShow(
-            3, "Money Heist", 2,
-            "To carry out the biggest heist in history, a mysterious man called The Professor recruits a band of eight robbers who have a single characteristic: none of them has anything to lose. Five months of seclusion - memorizing every step, every detail, every probability - culminate in eleven days locked up in the National Coinage and Stamp Factory of Spain, surrounded by police forces and with dozens of hostages in their power, to find out whether their suicide wager will lead to everything or nothing.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/MoEKaPFHABtA1xKoOteirGaHl1.jpg",
-            "Crime, Drama", 85, "NETFLIX"
+        listTvShow.add((com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result(
+            "/5zS9trn5k6T6Oew85ZIEKUfRo91.jpg", "The Simpsons", mutableListOf(16, 35),
+            456, "The Simpsons", mutableListOf("US"), "en", "The Simpsons",
+            "Set in Springfield, the average American town, the show focuses on the antics and everyday adventures of the Simpson family; Homer, Marge, Bart, Lisa and Maggie, as well as a virtual cast of thousands. Since the beginning, the series has been a pop culture icon, attracting hundreds of celebrities to guest star. The show has also made name for itself in its fearless satirical take on politics, media and American life in general."
+        ,101.435, "/qcr9bBY6MVeLzriKCmJOv1562uY.jpg", 7.4, 3184
         )))
 
-        listTvShow.add((TvShow(
-            4, "Law & Order: Special Victims Unit", 2,
-            "In the criminal justice system, sexually-based offenses are considered especially heinous. In New York City, the dedicated detectives who investigate these vicious felonies are members of an elite squad known as the Special Victims Unit. These are their stories.",
+        listTvShow.add((com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result(
+            "/8YWQ1JrA4fihMwf9kYvGtd6mSe0.jpg", "2013-09-23", mutableListOf(80, 18, 9648), 46952,
             "https://image.tmdb.org/t/p/w600_and_h900_bestv2/6t6r1VGQTTQecN4V0sZeqsmdU9g.jpg",
-            "Crime, Drama", 85, "NBC"
+            mutableListOf("US"), "en", "The Blacklist",
+            "Raymond \\\"Red\\\" Reddington, one of the FBI's most wanted fugitives, surrenders in person at FBI Headquarters in Washington, D.C. He claims that he and the FBI have the same interests: bringing down dangerous criminals and terrorists. In the last two decades, he's made a list of criminals and terrorists that matter the most but the FBI cannot find because it does not know they exist. Reddington calls this \\\"The Blacklist\\\". Reddington will co-operate, but insists that he will speak only to Elizabeth Keen, a rookie FBI profiler."
+        ,94.216, "/bgbQCW4fE9b6wSOSC6Fb4FfVzsW.jpg", 7.1, 1330
         )))
 
-        listTvShow.add((TvShow(
-            5, "Westworld", 2,
-            "A dark odyssey about the dawn of artificial consciousness and the evolution of sin. Set at the intersection of the near future and the reimagined past, it explores a world in which every human appetite, no matter how noble or depraved, can be indulged.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/y55oBgf6bVMI7sFNXwJDrSIxPQt.jpg",
-            "Western, Science Fiction", 85, "HBO"
+        listTvShow.add((com.programmergabut.moviecatalogue.data.model.json.oatvshow.Result(
+            "/jFclWhCwbW6r7ecQ3vF83QXnEWJ.jpg", "2016-01-17", mutableListOf(18),
+            62852, "Billions", mutableListOf("US"), "en", "HBO",
+            "A complex drama about power politics in the world of New York high finance. \\n\\nShrewd, savvy U.S. Attorney Chuck Rhoades and the brilliant, ambitious hedge fund king Bobby \\\"Axe\\\" Axelrod are on an explosive collision course, with each using all of his considerable smarts, power and influence to outmaneuver the other. The stakes are in the billions in this timely, provocative series.",
+            80.893, "/lbIMe94gXNGBzlFACqbrUyEXpyN.jpg", 7.7, 343
         )))
 
-        listTvShow.add((TvShow(
-            6, "The Flash", 2,
-            "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \"meta-human\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg",
-            "Drama, Sci-Fi & Fantasy", 72, "The CW"
-        )))
 
-        listTvShow.add((TvShow(
-            7, "The Red Tent", 2,
-            "Her name is Dinah. In the Bible her life is only hinted at during a brief and violent detour within the more familiar chapters about her father, Jacob, and his dozen sons in the Book of Genesis. Told through Dinah's eloquent voice, this sweeping miniseries reveals the traditions and turmoil of ancient womanhood. Dinah's tale begins with the story of her mothers: Leah, Rachel, Zilpah, and Bilhah, the four wives of Jacob. They love Dinah and give her gifts that are to sustain her through a hard-working youth, a calling to midwifery, and a new home in a foreign land. Dinah tells us of the world of the red tent, the place where women were sequestered during their cycles of birthing, menses, and illness; of her initiations into the religious and sexual practices of her tribe; of Jacob's courtship with his four wives; of the mystery and wonder of caravans, farmers, shepherds, and slaves; of love and death in the city of Shechem; of her half-brother Joseph's rise in Egypt, and of course her marriage to Shechem and it's bloody consequences.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/eZffDwKkM8hO0gbzOXrQ1eyKhkx.jpg",
-            "Action & Adventure, Drama", 72, "Lifetime"
-        )))
-
-        listTvShow.add((TvShow(
-            8, "The Red Tent", 2,
-            "Set up to take the blame for corporate fraud, young Macarena Ferreiro is locked up in a high-security women's prison surrounded by tough, ruthless criminals in this tense, provocative Spanish thriller.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/7mfPWKrNInkTbjVwp0EkaFYRHqD.jpg",
-            "Drama", 81, "Lifetime"
-        )))
-
-        listTvShow.add((TvShow(
-            9, "The Simpsons", 2,
-            "Set in Springfield, the average American town, the show focuses on the antics and everyday adventures of the Simpson family; Homer, Marge, Bart, Lisa and Maggie, as well as a virtual cast of thousands. Since the beginning, the series has been a pop culture icon, attracting hundreds of celebrities to guest star. The show has also made name for itself in its fearless satirical take on politics, media and American life in general.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/qcr9bBY6MVeLzriKCmJOv1562uY.jpg",
-            "Animation, Comedy", 74, "FOX"
-        )))
-
-        listTvShow.add((TvShow(
-            10, "Vis a Vis: El Oasis", 2,
-            "After a few years dedicating themselves to robbing jewelers, banks and casinos, it is time for Macarena and Zulema to separate.",
-            "https://image.tmdb.org/t/p/w600_and_h900_bestv2/7EOWkNGxXq2MBZxfV3ZxjRM4vlH.jpg",
-            "Drama", 80, "FOX"
-        )))
-
-        return listTvShow
+        return Resource.success(OATvShowApi(1, listTvShow, 22, 433))
     }
 }

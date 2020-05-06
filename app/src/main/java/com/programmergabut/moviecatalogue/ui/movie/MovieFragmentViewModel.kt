@@ -9,6 +9,6 @@ import com.programmergabut.moviecatalogue.data.repository.MCRepository
 
 class MovieFragmentViewModel(private val repository: MCRepository): ViewModel() {
 
-    fun getNPMovie() = repository.getNPMovie()
+    fun nPMovie() = repository.getNPMovie()
 
 }
