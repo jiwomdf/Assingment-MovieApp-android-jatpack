@@ -1,11 +1,9 @@
-package com.programmergabut.moviecatalogue.data.model.json.npmovie
+package com.programmergabut.moviecatalogue.data.remote.json.oatvshow
 
 
 import com.google.gson.annotations.SerializedName
 
-data class NPMovieApi(
-    @SerializedName("dates")
-    val dates: Dates,
+data class OATvShowApi(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")

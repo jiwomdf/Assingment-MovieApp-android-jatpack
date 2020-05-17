@@ -3,7 +3,7 @@ package com.programmergabut.moviecatalogue.ui.movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
+import com.programmergabut.moviecatalogue.data.remote.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.repository.MCRepository
 import com.programmergabut.moviecatalogue.utils.DataDummy
 import com.programmergabut.moviecatalogue.utils.Resource

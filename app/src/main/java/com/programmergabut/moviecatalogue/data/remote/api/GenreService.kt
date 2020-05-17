@@ -1,6 +1,6 @@
-package com.programmergabut.moviecatalogue.data.api
+package com.programmergabut.moviecatalogue.data.remote.api
 
-import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
+import com.programmergabut.moviecatalogue.data.remote.json.genre.GenreApi
 import retrofit2.http.GET
 import retrofit2.http.Query
 

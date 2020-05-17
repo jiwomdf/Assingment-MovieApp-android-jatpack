@@ -1,4 +1,4 @@
-package com.programmergabut.moviecatalogue.data.model.json.genre
+package com.programmergabut.moviecatalogue.data.remote.json.genre
 
 
 import com.google.gson.annotations.SerializedName

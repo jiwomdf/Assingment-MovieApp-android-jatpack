@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.nhaarman.mockitokotlin2.verify
-import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
+import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.OATvShowApi
 import com.programmergabut.moviecatalogue.data.repository.MCRepository
 import com.programmergabut.moviecatalogue.utils.DataDummy
 import com.programmergabut.moviecatalogue.utils.Resource

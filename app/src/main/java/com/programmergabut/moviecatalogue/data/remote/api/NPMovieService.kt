@@ -1,5 +1,5 @@
-package com.programmergabut.moviecatalogue.data.api
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
+package com.programmergabut.moviecatalogue.data.remote.api
+import com.programmergabut.moviecatalogue.data.remote.json.npmovie.NPMovieApi
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface NPMovieService {
 
-    @GET("movie/now_playing?")
+    @GET("movie/top_rated?")
     suspend fun fetchNpMovie(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,

@@ -1,4 +1,4 @@
-package com.programmergabut.moviecatalogue.data.model.json.npmovie
+package com.programmergabut.moviecatalogue.data.remote.json.npmovie
 
 
 import com.google.gson.annotations.SerializedName

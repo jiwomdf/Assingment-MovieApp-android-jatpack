@@ -1,9 +1,12 @@
-package com.programmergabut.moviecatalogue.data.model.json.oatvshow
+package com.programmergabut.moviecatalogue.data.remote.json.npmovie
 
 
+import androidx.paging.PagedList
 import com.google.gson.annotations.SerializedName
 
-data class OATvShowApi(
+data class NPMovieApi(
+    @SerializedName("dates")
+    val dates: Dates,
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")

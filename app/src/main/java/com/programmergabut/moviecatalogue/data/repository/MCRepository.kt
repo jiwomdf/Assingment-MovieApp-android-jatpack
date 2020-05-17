@@ -1,51 +1,95 @@
 package com.programmergabut.moviecatalogue.data.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.programmergabut.moviecatalogue.data.RemoteDataSource
-import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
-import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.programmergabut.moviecatalogue.data.NetworkBoundResource
+import com.programmergabut.moviecatalogue.data.local.LocalDataSource
+import com.programmergabut.moviecatalogue.data.local.entity.NPMovie
+import com.programmergabut.moviecatalogue.data.local.entity.OATvShow
+import com.programmergabut.moviecatalogue.data.remote.RemoteDataSource
+import com.programmergabut.moviecatalogue.data.remote.json.genre.GenreApi
+import com.programmergabut.moviecatalogue.data.remote.json.npmovie.NPMovieApi
+import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.OATvShowApi
 import com.programmergabut.moviecatalogue.utils.Resource
 
 /*
  *  Created by Katili Jiwo Adi Wiyono on 03/05/20.
  */
 
-class MCRepository(private val remoteDataSource: RemoteDataSource) {
+class MCRepository(private val remoteDataSource: RemoteDataSource, private val localDataSource: LocalDataSource) {
 
 
     companion object {
         @Volatile
         private var instance: MCRepository? = null
 
-        fun getInstance(remoteDataSource: RemoteDataSource): MCRepository =
+        fun getInstance(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource): MCRepository =
             instance ?: synchronized(this) {
-                instance ?: MCRepository(remoteDataSource)
+                instance ?: MCRepository(remoteDataSource, localDataSource)
             }
     }
 
 
-    fun getNPMovie(): MutableLiveData<Resource<NPMovieApi>> {
-        val result = MutableLiveData<Resource<NPMovieApi>>()
+    fun getNPMovie(): LiveData<Resource<PagedList<NPMovie>>> {
 
-        remoteDataSource.getNPMovie(object : RemoteDataSource.LoadMovieCallback{
-            override fun onReceived(response: Resource<NPMovieApi>) {
-                result.postValue(response)
+        return object : NetworkBoundResource<PagedList<NPMovie>, NPMovieApi>() {
+            public override fun loadFromDB(): LiveData<PagedList<NPMovie>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
+
+                return LivePagedListBuilder(localDataSource.getAllMovie(), config).build()
             }
-        })
 
-        return result
+            override fun shouldFetch(data: PagedList<NPMovie>?): Boolean = data == null || data.isEmpty()
+
+            public override fun createCall() = remoteDataSource.getNPMovie()
+
+            public override fun saveCallResult(data: NPMovieApi) {
+                val movieList = ArrayList<NPMovie>()
+                for (itm in data.results) {
+                    val movie = NPMovie(itm.posterPath, itm.title, itm.voteCount.toFloat(), itm.releaseDate,
+                        itm.genreIds.toString(), itm.overview)
+                    movieList.add(movie)
+                }
+
+                localDataSource.insertMovie(movieList)
+            }
+        }.asLiveData()
+
     }
 
-    fun getOATvShow(): MutableLiveData<Resource<OATvShowApi>> {
-        val result = MutableLiveData<Resource<OATvShowApi>>()
+    fun getOATvShow(): LiveData<Resource<PagedList<OATvShow>>> {
+        return object : NetworkBoundResource<PagedList<OATvShow>, OATvShowApi>() {
+            public override fun loadFromDB(): LiveData<PagedList<OATvShow>> {
+                val config = PagedList.Config.Builder()
+                    .setEnablePlaceholders(false)
+                    .setInitialLoadSizeHint(4)
+                    .setPageSize(4)
+                    .build()
 
-        remoteDataSource.getOATvShow(object : RemoteDataSource.LoadTvShowCallback{
-            override fun onReceived(response: Resource<OATvShowApi>) {
-                result.postValue(response)
+                return LivePagedListBuilder(localDataSource.getAllTvShow(), config).build()
             }
-        })
-        return result
+
+            override fun shouldFetch(data: PagedList<OATvShow>?): Boolean = data == null || data.isEmpty()
+
+            public override fun createCall() = remoteDataSource.getOATvShow()
+
+            public override fun saveCallResult(data: OATvShowApi) {
+                val movieList = ArrayList<OATvShow>()
+                for (itm in data.results) {
+                    val oaTvShow = OATvShow(itm.posterPath, itm.name, itm.voteCount.toFloat(), itm.firstAirDate,
+                        itm.genreIds.toString(), itm.overview)
+                    movieList.add(oaTvShow)
+                }
+
+                localDataSource.insertTvShow(movieList)
+            }
+        }.asLiveData()
     }
 
     fun getGenreApi(): MutableLiveData<Resource<GenreApi>> {

@@ -1,6 +1,9 @@
 package com.programmergabut.moviecatalogue.di
 
-import com.programmergabut.moviecatalogue.data.RemoteDataSource
+import android.content.Context
+import com.programmergabut.moviecatalogue.data.local.LocalDataSource
+import com.programmergabut.moviecatalogue.data.local.room.MovieCatalogueDatabase
+import com.programmergabut.moviecatalogue.data.remote.RemoteDataSource
 import com.programmergabut.moviecatalogue.data.repository.MCRepository
 
 /*
@@ -10,11 +13,16 @@ import com.programmergabut.moviecatalogue.data.repository.MCRepository
 
 object Injection {
 
-    fun provideRepository(): MCRepository {
+    fun provideRepository(context: Context): MCRepository {
+
+        val database = MovieCatalogueDatabase.getInstance(context)
 
         val remoteDataSource = RemoteDataSource.getInstance()
 
-        return MCRepository.getInstance(remoteDataSource)
+        val localDataSource = LocalDataSource.getInstance(database.npMovieDao(), database.oaTvShow())
+
+
+        return MCRepository.getInstance(remoteDataSource, localDataSource)
     }
 
 }

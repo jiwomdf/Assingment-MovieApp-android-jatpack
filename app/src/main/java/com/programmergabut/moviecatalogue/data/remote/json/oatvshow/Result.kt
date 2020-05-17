@@ -1,11 +1,11 @@
-package com.programmergabut.moviecatalogue.data.model.json.oatvshow
+package com.programmergabut.moviecatalogue.data.remote.json.oatvshow
 
 
 import com.google.gson.annotations.SerializedName
 
 data class Result(
     @SerializedName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String?,
     @SerializedName("first_air_date")
     val firstAirDate: String,
     @SerializedName("genre_ids")

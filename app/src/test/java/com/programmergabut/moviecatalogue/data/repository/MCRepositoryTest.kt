@@ -3,7 +3,7 @@ package com.programmergabut.moviecatalogue.data.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
-import com.programmergabut.moviecatalogue.data.RemoteDataSource
+import com.programmergabut.moviecatalogue.data.remote.RemoteDataSource
 import com.programmergabut.moviecatalogue.utils.DataDummy
 import com.programmergabut.moviecatalogue.utils.LiveDataTestUtil
 import com.programmergabut.moviecatalogue.utils.Resource

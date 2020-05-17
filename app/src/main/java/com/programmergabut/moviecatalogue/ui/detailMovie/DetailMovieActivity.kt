@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.model.json.genre.Genre
+import com.programmergabut.moviecatalogue.data.remote.json.genre.Genre
 import com.programmergabut.moviecatalogue.utils.EnumConfig
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory

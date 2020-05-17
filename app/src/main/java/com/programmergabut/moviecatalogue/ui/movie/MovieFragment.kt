@@ -8,9 +8,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
+import com.programmergabut.moviecatalogue.data.remote.json.npmovie.Result
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list_movie.*
@@ -36,12 +37,10 @@ class MovieFragment : Fragment() {
 
         initAdapter(mvAdapter)
         observeApi()
-
-        viewModel.nPMovie()
     }
 
     private fun observeApi() {
-        viewModel.nPMovie().observe(this, Observer {
+        viewModel.movieApi.observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {
@@ -58,9 +57,11 @@ class MovieFragment : Fragment() {
         })
     }
 
-    private fun updateAdapterData(newData: List<Result>?, mvAdapter: MovieAdapter) {
+    private fun updateAdapterData(newData: PagedList<Result>?, mvAdapter: MovieAdapter) {
         newData?.let { datas ->
-            mvAdapter.setData(datas)
+            //val new = datas.filterIndexed { index, _ -> index < 5 }.sortedByDescending { it.voteCount }
+            val newSorted = datas.sortedByDescending { it.voteCount } as PagedList<Result>
+            mvAdapter.submitList(newSorted)
             mvAdapter.notifyDataSetChanged()
         }
     }

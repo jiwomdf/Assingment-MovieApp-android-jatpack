@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.Result
+import com.programmergabut.moviecatalogue.data.remote.json.npmovie.Result
 import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
 import com.programmergabut.moviecatalogue.utils.EnumConfig
 import kotlinx.android.synthetic.main.layout_movie.view.*
@@ -17,13 +19,17 @@ import kotlinx.android.synthetic.main.layout_movie.view.*
  *  Created by Katili Jiwo Adi Wiyono on 23/04/20.
  */
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
+class MovieAdapter : PagedListAdapter<Result,MovieAdapter.FilmViewHolder>(DIFF_CALLBACK) {
 
-    private var listData = mutableListOf<Result>()
-
-    fun setData(datas: List<Result>){
-        listData.clear()
-        listData.addAll(datas)
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Result>() {
+            override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+                return oldItem.id == newItem.id
+            }
+            override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
@@ -31,10 +37,11 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.FilmViewHolder>() {
         return FilmViewHolder(view)
     }
 
-    override fun getItemCount(): Int = listData.size
-
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
-        holder.bind(listData[position])
+
+        val movie = getItem(position)
+        if (movie != null)
+            holder.bind(movie)
     }
 
     inner class FilmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

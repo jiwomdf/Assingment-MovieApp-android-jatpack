@@ -1,13 +1,14 @@
-package com.programmergabut.moviecatalogue.data
+package com.programmergabut.moviecatalogue.data.remote
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
-import com.programmergabut.moviecatalogue.data.api.GenreService
-import com.programmergabut.moviecatalogue.data.api.NPMovieService
-import com.programmergabut.moviecatalogue.data.api.OATvShowService
-import com.programmergabut.moviecatalogue.data.model.json.genre.GenreApi
-import com.programmergabut.moviecatalogue.data.model.json.npmovie.NPMovieApi
-import com.programmergabut.moviecatalogue.data.model.json.oatvshow.OATvShowApi
-import com.programmergabut.moviecatalogue.utils.EspressoIdlingResource
+import com.programmergabut.moviecatalogue.data.remote.api.GenreService
+import com.programmergabut.moviecatalogue.data.remote.api.NPMovieService
+import com.programmergabut.moviecatalogue.data.remote.api.OATvShowService
+import com.programmergabut.moviecatalogue.data.remote.json.genre.GenreApi
+import com.programmergabut.moviecatalogue.data.remote.json.npmovie.NPMovieApi
+import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.OATvShowApi
 import com.programmergabut.moviecatalogue.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ class RemoteDataSource {
     //https://api.themoviedb.org/3/tv/on_the_air?api_key={apiKey}&language=en-US&page=1
 
     private val strApi = "https://api.themoviedb.org/3/"
-    private val apiKey = ""
+    private val apiKey = "bcfe8d2c5ce0d14c7d32c648a1b3679d"
     private val language = "en-US"
     private val page = "1"
 
@@ -41,7 +42,7 @@ class RemoteDataSource {
             }
     }
 
-    private fun getNowPlayingMovieApi(): NPMovieService{
+    private fun getNowPlayingMovieApi(): NPMovieService {
         return Retrofit.Builder()
             .baseUrl(strApi)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
@@ -72,55 +73,57 @@ class RemoteDataSource {
     private suspend fun fetchGenreApi(): GenreApi = getGenreApi().fetchGenre(apiKey, language)
 
 
-    fun getNPMovie(callback: LoadMovieCallback) {
+    fun getNPMovie(): LiveData<Resource<NPMovieApi>> {
 
+        val resultContent = MutableLiveData<Resource<NPMovieApi>>()
         CoroutineScope(Dispatchers.Default).launch{
-            EspressoIdlingResource.increment()
+            //EspressoIdlingResource.increment()
+
             try {
-                callback.onReceived(Resource.success(fetchNPMovieApi()))
+                resultContent.value = Resource.success(fetchNPMovieApi())
             }
             catch (ex: Exception){
-                callback.onReceived(Resource.error(ex.message.toString(), null))
+                Resource.error(ex.message.toString(), null)
             }
-            EspressoIdlingResource.decrement()
+            //EspressoIdlingResource.decrement()
         }
+
+        return resultContent
     }
 
-    fun getOATvShow(callback: LoadTvShowCallback){
+    fun getOATvShow(): LiveData<Resource<OATvShowApi>> {
+
+        val resultContent = MutableLiveData<Resource<OATvShowApi>>()
         CoroutineScope(Dispatchers.Default).launch{
-            EspressoIdlingResource.increment()
+            //EspressoIdlingResource.increment()
+
             try {
-                callback.onReceived(Resource.success(fetchOATvShowApi()))
+                resultContent.value = Resource.success(fetchOATvShowApi())
             }
             catch (ex: Exception){
-                callback.onReceived(Resource.error(ex.message.toString(), null))
+                Resource.error(ex.message.toString(), null)
             }
-            EspressoIdlingResource.decrement()
+            //EspressoIdlingResource.decrement()
         }
+        return resultContent
     }
 
     fun getGenre(callback: LoadGenreCallback){
+
         CoroutineScope(Dispatchers.Default).launch{
-            EspressoIdlingResource.increment()
+            //EspressoIdlingResource.increment()
             try {
                 callback.onReceived(Resource.success(fetchGenreApi()))
             }
             catch (ex: Exception){
-                callback.onReceived(Resource.error(ex.message.toString(), null))
+                Resource.error(ex.message.toString(), null)
             }
-            EspressoIdlingResource.decrement()
+            //EspressoIdlingResource.decrement()
         }
-    }
-
-    interface LoadMovieCallback{
-        fun onReceived(response: Resource<NPMovieApi>)
-    }
-
-    interface LoadTvShowCallback{
-        fun onReceived(response: Resource<OATvShowApi>)
     }
 
     interface LoadGenreCallback{
         fun onReceived(response: Resource<GenreApi>)
     }
+
 }

@@ -10,6 +10,7 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.rule.ActivityTestRule
 import com.google.android.material.tabs.TabLayout
@@ -27,12 +28,6 @@ import org.junit.Test
  */
 
 class MainActivityTest{
-
-    /*
-        note:
-        entah kenapa loadTvShowDetail() suka error,
-        tetapi juga suka berhasil
-    */
 
     private val dummyMovie = DataDummy.generateMovie()
     private val dummyTvShow = DataDummy.generateTvShow()
@@ -61,12 +56,11 @@ class MainActivityTest{
     @Test
     fun loadMovieDetail(){
 
-        val dummyDataSize = dummyMovie.data?.results?.size!!
-        val dummyDataList = dummyMovie.data?.results!!
-        val tempGenre = "Adventure, Drama, Family"
+        onView(withId(R.id.rv_listMovie)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_listMovie)).perform(actionOnItemAtPosition<RecyclerView.ViewHolder>( 0, click()))
 
-        onView(withId(R.id.rv_listMovie)).perform(RecyclerViewActions
-            .actionOnItemAtPosition<RecyclerView.ViewHolder>( dummyDataSize - 1, click()))
+        val dummyDataList = dummyMovie.data?.results!!
+        val tempGenre = "Crime, Drama"
 
         onView(withId(R.id.iv_detail_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_detail_title_movie)).check(matches(isDisplayed()))
@@ -76,11 +70,11 @@ class MainActivityTest{
         onView(withId(R.id.tv_detail_overview_movie)).check(matches(isDisplayed()))
 
         //onView(withId(R.id.iv_detail)).check(matches(withText(dummyMovie[dummyMovie.size - 1].imgUrl)))
-        onView(withId(R.id.tv_detail_title_movie)).check(matches(withText(dummyDataList[dummyDataSize - 1].title)))
-        onView(withId(R.id.tv_detail_score_movie)).check(matches(withText("Vote Count : " + dummyDataList[dummyDataSize - 1].voteCount)))
-        onView(withId(R.id.tv_detail_ect_movie)).check(matches(withText("Release Date : " + dummyDataList[dummyDataSize - 1].releaseDate)))
+        onView(withId(R.id.tv_detail_title_movie)).check(matches(withText(dummyDataList[0].title)))
+        onView(withId(R.id.tv_detail_score_movie)).check(matches(withText("Vote Count : " + dummyDataList[0].voteCount)))
+        onView(withId(R.id.tv_detail_ect_movie)).check(matches(withText("Release Date : " + dummyDataList[0].releaseDate)))
         onView(withId(R.id.tv_detail_genre_movie)).check(matches(withText(tempGenre)))
-        onView(withId(R.id.tv_detail_overview_movie)).check(matches(withText(dummyDataList[dummyDataSize - 1].overview)))
+        onView(withId(R.id.tv_detail_overview_movie)).check(matches(withText(dummyDataList[0].overview)))
     }
 
     @Test
@@ -88,34 +82,8 @@ class MainActivityTest{
         val dummyDataSize = dummyTvShow.data?.results?.size!!
 
         onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
-        onView(withId(R.id.rv_listTvShow)).perform(RecyclerViewActions
-            .actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyDataSize - 1, click()))
-    }
-
-    @Test
-    fun loadTvShowDetail(){
-
-        val dummyDataSize = dummyTvShow.data?.results?.size!!
-        val dummyDataList = dummyTvShow.data?.results!!
-        val tempGenre = "Drama, Mystery"
-
-        onView(withId(R.id.tabs)).perform(selectTabAtPosition(1))
-        onView(withId(R.id.rv_listTvShow)).perform(RecyclerViewActions
-            .actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyDataSize - 1, click()))
-
-        onView(withId(R.id.iv_detail_tvShow)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_title_tvShow)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_score_tvShow)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_ect_tvShow)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_genre_tvShow)).check(matches(isDisplayed()))
-        onView(withId(R.id.tv_detail_overview_tvShow)).check(matches(isDisplayed()))
-
-        //onView(withId(R.id.iv_detail)).check(matches(withText(dummyTvShow[dummyTvShow.size - 1].imgUrl)))
-        onView(withId(R.id.tv_detail_title_tvShow)).check(matches(withText(dummyDataList[dummyDataSize - 1].name)))
-        onView(withId(R.id.tv_detail_score_tvShow)).check(matches(withText("Vote Count : " + dummyDataList[dummyDataSize - 1].voteCount)))
-        onView(withId(R.id.tv_detail_ect_tvShow)).check(matches(withText("Release Date : " + dummyDataList[dummyDataSize - 1].firstAirDate)))
-        onView(withId(R.id.tv_detail_genre_tvShow)).check(matches(withText(tempGenre)))
-        onView(withId(R.id.tv_detail_overview_tvShow)).check(matches(withText(dummyDataList[dummyDataSize - 1].overview)))
+        onView(withId(R.id.rv_listTvShow)).perform(
+            actionOnItemAtPosition<RecyclerView.ViewHolder>(dummyDataSize - 1, click()))
     }
 
     private fun selectTabAtPosition(tabIndex: Int): ViewAction {
@@ -135,5 +103,6 @@ class MainActivityTest{
             }
         }
     }
+
 
 }
