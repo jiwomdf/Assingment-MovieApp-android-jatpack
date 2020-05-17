@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.Result
+import com.programmergabut.moviecatalogue.data.local.entity.OATvShow
 import com.programmergabut.moviecatalogue.ui.detailTvShow.DetailTvShowActivity
 import com.programmergabut.moviecatalogue.utils.EnumConfig
 import kotlinx.android.synthetic.main.layout_tvshow.view.*
@@ -17,13 +19,17 @@ import kotlinx.android.synthetic.main.layout_tvshow.view.*
  *  Created by Katili Jiwo Adi Wiyono on 23/04/20.
  */
 
-class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
+class TvShowAdapter: PagedListAdapter<OATvShow,TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
 
-    private var listData = mutableListOf<Result>()
-
-    fun setData(datas: List<Result>){
-        listData.clear()
-        listData.addAll(datas)
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<OATvShow>() {
+            override fun areItemsTheSame(oldItem: OATvShow, newItem: OATvShow): Boolean {
+                return oldItem.id == newItem.id
+            }
+            override fun areContentsTheSame(oldItem: OATvShow, newItem: OATvShow): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
@@ -31,33 +37,51 @@ class TvShowAdapter: RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
         return TvShowViewHolder(view)
     }
 
-    override fun getItemCount(): Int = listData.size
-
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        holder.bind(listData[position])
+
+        val tvShow = getItem(position)
+        if (tvShow != null)
+            holder.bind(tvShow)
     }
 
     inner class TvShowViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun bind(tvShow: Result) {
+        fun bind(tvShow: OATvShow) {
             itemView.apply {
-                tv_tvshow_title.text = tvShow.name
+                tv_tvshow_title.text = tvShow.title
                 tv_tvshow_overview.text = if(tvShow.overview.length > 150) tvShow.overview.substring(0,150) else tvShow.overview
+
                 Glide.with(context)
-                    .load(EnumConfig.imgBaseUrl + tvShow.backdropPath)
+                    .load(EnumConfig.imgBaseUrl + tvShow.tvShowPosterUrl)
                     .centerCrop()
                     .into(iv_tvshow)
 
-                val b = initBundle(tvShow.id, tvShow.name,
-                    tvShow.firstAirDate, tvShow.overview, tvShow.voteCount,
-                    tvShow.posterPath, tvShow.genreIds as ArrayList<Int>)
-
                 setOnClickListener {
+
+                    val listGenre = initListGenre(tvShow)
+
+                    val b = initBundle(tvShow.id, tvShow.title!!,
+                        tvShow.ect, tvShow.overview, tvShow.vote,
+                        tvShow.tvShowPosterUrl!!, listGenre as ArrayList<Int>)
+
+
                     val intent = Intent(context, DetailTvShowActivity::class.java).apply {
                         putExtra(DetailTvShowActivity.bundleMovieDetail, b)
                     }
                     context.startActivity(intent)
                 }
             }
+        }
+
+        private fun initListGenre(tvShow: OATvShow): MutableList<Int> {
+            val clean = tvShow.genre.replace("[", "").replace("]", "")
+                .replace(" ", "").trim()
+            val genre = clean.split(",")
+            val listGenre = mutableListOf<Int>()
+            genre.forEach {
+                listGenre.add(it.toInt())
+            }
+
+            return listGenre
         }
 
         private fun initBundle(

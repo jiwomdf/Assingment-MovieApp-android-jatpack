@@ -36,7 +36,7 @@ class DetailTvShowActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_tv_show)
 
-        detailTvShowViewModel = ViewModelProvider(this, ViewModelFactory.getInstance())[DetailTvShowViewModel::class.java]
+        detailTvShowViewModel = ViewModelProvider(this, ViewModelFactory.getInstance(this))[DetailTvShowViewModel::class.java]
 
         initVariable()
 

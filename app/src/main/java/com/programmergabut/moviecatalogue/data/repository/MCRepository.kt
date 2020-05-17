@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.programmergabut.moviecatalogue.ContextProviders
 import com.programmergabut.moviecatalogue.data.NetworkBoundResource
 import com.programmergabut.moviecatalogue.data.local.LocalDataSource
 import com.programmergabut.moviecatalogue.data.local.entity.NPMovie
@@ -18,7 +19,10 @@ import com.programmergabut.moviecatalogue.utils.Resource
  *  Created by Katili Jiwo Adi Wiyono on 03/05/20.
  */
 
-class MCRepository(private val remoteDataSource: RemoteDataSource, private val localDataSource: LocalDataSource) {
+class MCRepository(private val remoteDataSource: RemoteDataSource,
+                   private val localDataSource: LocalDataSource,
+                   private val contextProviders: ContextProviders
+) {
 
 
     companion object {
@@ -27,14 +31,15 @@ class MCRepository(private val remoteDataSource: RemoteDataSource, private val l
 
         fun getInstance(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource): MCRepository =
             instance ?: synchronized(this) {
-                instance ?: MCRepository(remoteDataSource, localDataSource)
+                instance ?: MCRepository(remoteDataSource, localDataSource, ContextProviders.getInstance())
+                    .also { instance = it }
             }
     }
 
 
     fun getNPMovie(): LiveData<Resource<PagedList<NPMovie>>> {
 
-        return object : NetworkBoundResource<PagedList<NPMovie>, NPMovieApi>() {
+        return object : NetworkBoundResource<PagedList<NPMovie>, NPMovieApi>(contextProviders) {
             public override fun loadFromDB(): LiveData<PagedList<NPMovie>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
@@ -52,7 +57,7 @@ class MCRepository(private val remoteDataSource: RemoteDataSource, private val l
             public override fun saveCallResult(data: NPMovieApi) {
                 val movieList = ArrayList<NPMovie>()
                 for (itm in data.results) {
-                    val movie = NPMovie(itm.posterPath, itm.title, itm.voteCount.toFloat(), itm.releaseDate,
+                    val movie = NPMovie(itm.posterPath, itm.title, itm.voteCount, itm.releaseDate,
                         itm.genreIds.toString(), itm.overview)
                     movieList.add(movie)
                 }
@@ -64,7 +69,7 @@ class MCRepository(private val remoteDataSource: RemoteDataSource, private val l
     }
 
     fun getOATvShow(): LiveData<Resource<PagedList<OATvShow>>> {
-        return object : NetworkBoundResource<PagedList<OATvShow>, OATvShowApi>() {
+        return object : NetworkBoundResource<PagedList<OATvShow>, OATvShowApi>(contextProviders) {
             public override fun loadFromDB(): LiveData<PagedList<OATvShow>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
@@ -82,7 +87,7 @@ class MCRepository(private val remoteDataSource: RemoteDataSource, private val l
             public override fun saveCallResult(data: OATvShowApi) {
                 val movieList = ArrayList<OATvShow>()
                 for (itm in data.results) {
-                    val oaTvShow = OATvShow(itm.posterPath, itm.name, itm.voteCount.toFloat(), itm.firstAirDate,
+                    val oaTvShow = OATvShow(itm.posterPath, itm.name, itm.voteCount, itm.firstAirDate,
                         itm.genreIds.toString(), itm.overview)
                     movieList.add(oaTvShow)
                 }

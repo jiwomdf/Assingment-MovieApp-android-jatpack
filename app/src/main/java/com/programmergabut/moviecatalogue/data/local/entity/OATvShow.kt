@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 data class OATvShow(
     var tvShowPosterUrl: String?,
     var title: String?,
-    var score_tvShow: Float,
-    var ect_tvShow: String,
-    var genre_tvShow: String,
-    var overview_tvShow: String
+    var vote: Int,
+    var ect: String,
+    var genre: String,
+    var overview: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

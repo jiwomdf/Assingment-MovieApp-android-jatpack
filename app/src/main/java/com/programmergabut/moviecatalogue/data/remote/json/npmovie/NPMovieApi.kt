@@ -1,7 +1,6 @@
 package com.programmergabut.moviecatalogue.data.remote.json.npmovie
 
 
-import androidx.paging.PagedList
 import com.google.gson.annotations.SerializedName
 
 data class NPMovieApi(

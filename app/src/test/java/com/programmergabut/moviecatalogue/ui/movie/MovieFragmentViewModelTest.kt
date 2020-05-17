@@ -52,7 +52,7 @@ class MovieFragmentViewModelTest {
         val movieRetval = viewModel.nPMovie()
         verify(mcrRepository).getNPMovie()
         assertNotNull(movieRetval)
-        assertEquals(5, movieRetval.value?.data?.results?.size)
+        assertEquals(5, movieRetval.value.data.results.size)
 
         viewModel.nPMovie().observeForever(observer)
         verify(observer).onChanged(dummyMovie)

@@ -2,19 +2,19 @@ package com.programmergabut.moviecatalogue.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.programmergabut.moviecatalogue.ContextProviders
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.utils.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-abstract class NetworkBoundResource<ResultType, RequestType>() {
+abstract class NetworkBoundResource<ResultType, RequestType>
+    constructor(private val contextProviders: ContextProviders) {
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
-        result.value = Resource.loading(null)
+        setValue(Resource.loading(null))
 
         @Suppress("LeakingThis")
         val dbSource = loadFromDB()
@@ -25,7 +25,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
                 fetchFromNetwork(dbSource)
             else {
                 result.addSource(dbSource) { newData ->
-                    result.value = Resource.success(newData)
+                    setValue(Resource.success(newData))
                 }
             }
         }
@@ -46,35 +46,41 @@ abstract class NetworkBoundResource<ResultType, RequestType>() {
         val apiResponse = createCall()
 
         result.addSource(dbSource) { newData ->
-            result.value = Resource.loading(newData)
+            setValue(Resource.loading(newData))
         }
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
             result.removeSource(dbSource)
             when (response.Status) {
                 EnumStatus.SUCCESS ->
-                    CoroutineScope(Dispatchers.IO).launch {
+                    GlobalScope.launch(contextProviders.IO) {
 
                         saveCallResult(response.data!!)
 
-                        withContext(Dispatchers.Main){
+                        GlobalScope.launch(contextProviders.Main){
                             result.addSource(loadFromDB()) { newData ->
-                                result.value = Resource.success(newData)
+                                setValue(Resource.success(newData))
                             }
                         }
                     }
-                EnumStatus.LOADING -> CoroutineScope(Dispatchers.Main).launch {
+                EnumStatus.LOADING -> GlobalScope.launch(contextProviders.Main) {
                     result.addSource(loadFromDB()) { newData ->
-                        result.value = Resource.success(newData)
+                        setValue(Resource.success(newData))
                     }
                 }
                 EnumStatus.ERROR -> {
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
-                        result.value = Resource.error(response.message!!, newData)
+                        setValue(Resource.error(response.message!!, newData))
                     }
                 }
             }
+        }
+    }
+
+    private fun setValue(newValue: Resource<ResultType>) {
+        if (result.value != newValue) {
+            result.value = newValue
         }
     }
 

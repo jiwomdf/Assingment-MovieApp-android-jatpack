@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.remote.json.npmovie.Result
+import com.programmergabut.moviecatalogue.data.local.entity.NPMovie
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_list_movie.*
@@ -27,7 +27,7 @@ class MovieFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory.getInstance())[MovieFragmentViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory.getInstance(this.context!!))[MovieFragmentViewModel::class.java]
 
         return inflater.inflate(R.layout.fragment_list_movie, container, false)
     }
@@ -40,11 +40,11 @@ class MovieFragment : Fragment() {
     }
 
     private fun observeApi() {
-        viewModel.movieApi.observe(this, Observer {
+        viewModel.movie.observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {
-                    updateAdapterData(it.data?.results, mvAdapter)
+                    updateAdapterData(it.data, mvAdapter)
                     pb_fragmentMovie.visibility = View.GONE
                 }
                 EnumStatus.LOADING -> pb_fragmentMovie.visibility = View.VISIBLE
@@ -57,11 +57,11 @@ class MovieFragment : Fragment() {
         })
     }
 
-    private fun updateAdapterData(newData: PagedList<Result>?, mvAdapter: MovieAdapter) {
+    private fun updateAdapterData(newData: PagedList<NPMovie>?, mvAdapter: MovieAdapter) {
         newData?.let { datas ->
             //val new = datas.filterIndexed { index, _ -> index < 5 }.sortedByDescending { it.voteCount }
-            val newSorted = datas.sortedByDescending { it.voteCount } as PagedList<Result>
-            mvAdapter.submitList(newSorted)
+            //val newSorted = datas.sortedByDescending { it.overview }
+            mvAdapter.submitList(datas)
             mvAdapter.notifyDataSetChanged()
         }
     }

@@ -27,6 +27,9 @@ buildscript {
         mockitoKotlinVersion = '2.1.0'
         idleResourceVersion = '3.2.0'
         espressoIdlingResource = "3.0.2"
+        roomVersion = '2.2.5'
+        pagingVersion = '2.1.2'
+
     }
 }
 

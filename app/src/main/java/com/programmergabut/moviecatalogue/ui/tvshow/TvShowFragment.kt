@@ -8,10 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.Result
+import com.programmergabut.moviecatalogue.data.local.entity.OATvShow
 import com.programmergabut.moviecatalogue.utils.EnumStatus
 import com.programmergabut.moviecatalogue.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_tv_show.*
@@ -22,18 +23,18 @@ import kotlinx.android.synthetic.main.fragment_tv_show.*
 
 class TvShowFragment : Fragment() {
 
-    lateinit var viewModel: TvShowViewModel
+    private lateinit var viewModel: TvShowViewModel
     private var tvShowAdapter = TvShowAdapter()
-    lateinit var rv_listTvShow: RecyclerView
+    lateinit var rvListTvShow: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory.getInstance())[TvShowViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), ViewModelFactory.getInstance(this.context!!))[TvShowViewModel::class.java]
 
         val view = inflater.inflate(R.layout.fragment_tv_show, container, false)
 
-        rv_listTvShow = view.findViewById(R.id.rv_listTvShow)
-        initAdapter(tvShowAdapter, rv_listTvShow)
+        rvListTvShow = view.findViewById(R.id.rv_listTvShow)
+        initAdapter(tvShowAdapter, rvListTvShow)
 
         return view
     }
@@ -42,15 +43,14 @@ class TvShowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         observeApi()
-
     }
 
     private fun observeApi() {
-        viewModel.tvShowApi.observe(this, Observer {
+        viewModel.tvShow.observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {
-                    updateAdapterData(it.data?.results, tvShowAdapter)
+                    updateAdapterData(it.data, tvShowAdapter)
                     pb_fragmentTvShow.visibility = View.GONE
                 }
                 EnumStatus.LOADING -> pb_fragmentTvShow.visibility = View.VISIBLE
@@ -63,12 +63,11 @@ class TvShowFragment : Fragment() {
         })
     }
 
-    private fun updateAdapterData(newData: List<Result>?, mvAdapter: TvShowAdapter) {
+    private fun updateAdapterData(newData: PagedList<OATvShow>?, mvAdapter: TvShowAdapter) {
 
         newData?.let { datas ->
-            val new = datas.filterIndexed { index, _ -> index < 5 }
-            val newSorted = new.sortedByDescending { it.voteCount }
-            mvAdapter.setData(newSorted)
+            //val newSorted = datas.sortedByDescending { it.overview } as PagedList<OATvShow>
+            mvAdapter.submitList(datas)
             mvAdapter.notifyDataSetChanged()
         }
     }

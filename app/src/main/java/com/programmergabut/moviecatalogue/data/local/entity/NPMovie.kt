@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey
 data class NPMovie(
     var moviePosterUrl: String?,
     var title: String?,
-    var score_movie: Float,
-    var ect_movie: String,
-    var genre_movie: String,
-    var overview_movie: String
+    var vote: Int,
+    var ect: String,
+    var genre: String,
+    var overview: String
 ){
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0

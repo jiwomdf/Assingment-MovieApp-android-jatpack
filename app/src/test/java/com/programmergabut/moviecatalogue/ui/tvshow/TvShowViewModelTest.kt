@@ -52,7 +52,7 @@ class TvShowViewModelTest {
         val tvShowRetVal = viewModel.oaTvShow()
         verify(mcrRepository).getOATvShow()
         assertNotNull(tvShowRetVal)
-        assertEquals(5, tvShowRetVal.value?.data?.results?.size)
+        assertEquals(5, tvShowRetVal.value.data.results.size)
 
         viewModel.oaTvShow().observeForever(observer)
         verify(observer).onChanged(dummyTvShow)

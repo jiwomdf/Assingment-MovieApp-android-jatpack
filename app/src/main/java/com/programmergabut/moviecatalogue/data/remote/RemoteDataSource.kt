@@ -3,15 +3,16 @@ package com.programmergabut.moviecatalogue.data.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.GsonBuilder
+import com.programmergabut.moviecatalogue.ContextProviders
 import com.programmergabut.moviecatalogue.data.remote.api.GenreService
 import com.programmergabut.moviecatalogue.data.remote.api.NPMovieService
 import com.programmergabut.moviecatalogue.data.remote.api.OATvShowService
+import com.programmergabut.moviecatalogue.data.remote.json.RetrofitFactory
 import com.programmergabut.moviecatalogue.data.remote.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.remote.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.OATvShowApi
 import com.programmergabut.moviecatalogue.utils.Resource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  *  Created by Katili Jiwo Adi Wiyono on 05/05/20.
  */
 
-class RemoteDataSource {
+class RemoteDataSource(private val contextProviders: ContextProviders) {
 
     //https://api.themoviedb.org/3/movie/now_playing?api_key={apiKey}&language=en-US&page=1
     //https://api.themoviedb.org/3/tv/on_the_air?api_key={apiKey}&language=en-US&page=1
@@ -34,37 +35,22 @@ class RemoteDataSource {
         @Volatile
         private var instance: RemoteDataSource? = null
 
-        fun getInstance(): RemoteDataSource =
+        fun getInstance(contextProviders: ContextProviders): RemoteDataSource =
             instance
                 ?: synchronized(this) {
                 instance
-                    ?: RemoteDataSource()
+                    ?: RemoteDataSource(contextProviders)
             }
     }
 
-    private fun getNowPlayingMovieApi(): NPMovieService {
-        return Retrofit.Builder()
-            .baseUrl(strApi)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(NPMovieService::class.java)
-    }
+    private fun getNowPlayingMovieApi(): NPMovieService =
+        RetrofitFactory.selectClass(strApi, NPMovieService::class.java) as NPMovieService
 
-    private fun getOnAirTvShowApi(): OATvShowService {
-        return Retrofit.Builder()
-            .baseUrl(strApi)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(OATvShowService::class.java)
-    }
+    private fun getOnAirTvShowApi(): OATvShowService =
+        RetrofitFactory.selectClass(strApi, OATvShowService::class.java) as OATvShowService
 
-    private fun getGenreApi(): GenreService {
-        return Retrofit.Builder()
-            .baseUrl(strApi)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(GenreService::class.java)
-    }
+    private fun getGenreApi(): GenreService =
+        RetrofitFactory.selectClass(strApi, GenreService::class.java) as GenreService
 
     private suspend fun fetchNPMovieApi(): NPMovieApi = getNowPlayingMovieApi().fetchNpMovie(apiKey, language, page)
 
@@ -76,11 +62,11 @@ class RemoteDataSource {
     fun getNPMovie(): LiveData<Resource<NPMovieApi>> {
 
         val resultContent = MutableLiveData<Resource<NPMovieApi>>()
-        CoroutineScope(Dispatchers.Default).launch{
+        GlobalScope.launch(contextProviders.IO){
             //EspressoIdlingResource.increment()
 
             try {
-                resultContent.value = Resource.success(fetchNPMovieApi())
+                resultContent.postValue(Resource.success(fetchNPMovieApi()))
             }
             catch (ex: Exception){
                 Resource.error(ex.message.toString(), null)
@@ -94,11 +80,11 @@ class RemoteDataSource {
     fun getOATvShow(): LiveData<Resource<OATvShowApi>> {
 
         val resultContent = MutableLiveData<Resource<OATvShowApi>>()
-        CoroutineScope(Dispatchers.Default).launch{
+        GlobalScope.launch(contextProviders.IO){
             //EspressoIdlingResource.increment()
 
             try {
-                resultContent.value = Resource.success(fetchOATvShowApi())
+                resultContent.postValue(Resource.success(fetchOATvShowApi()))
             }
             catch (ex: Exception){
                 Resource.error(ex.message.toString(), null)
@@ -110,7 +96,7 @@ class RemoteDataSource {
 
     fun getGenre(callback: LoadGenreCallback){
 
-        CoroutineScope(Dispatchers.Default).launch{
+        GlobalScope.launch(contextProviders.IO){
             //EspressoIdlingResource.increment()
             try {
                 callback.onReceived(Resource.success(fetchGenreApi()))

@@ -1,6 +1,7 @@
 package com.programmergabut.moviecatalogue.di
 
 import android.content.Context
+import com.programmergabut.moviecatalogue.ContextProviders
 import com.programmergabut.moviecatalogue.data.local.LocalDataSource
 import com.programmergabut.moviecatalogue.data.local.room.MovieCatalogueDatabase
 import com.programmergabut.moviecatalogue.data.remote.RemoteDataSource
@@ -17,7 +18,7 @@ object Injection {
 
         val database = MovieCatalogueDatabase.getInstance(context)
 
-        val remoteDataSource = RemoteDataSource.getInstance()
+        val remoteDataSource = RemoteDataSource.getInstance(ContextProviders.getInstance())
 
         val localDataSource = LocalDataSource.getInstance(database.npMovieDao(), database.oaTvShow())
 

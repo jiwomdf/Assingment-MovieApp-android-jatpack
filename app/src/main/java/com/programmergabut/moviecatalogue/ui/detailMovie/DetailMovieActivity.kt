@@ -36,7 +36,7 @@ class DetailMovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_movie)
-        detailMovieViewModel= ViewModelProvider(this, ViewModelFactory.getInstance())[DetailMovieViewModel::class.java]
+        detailMovieViewModel= ViewModelProvider(this, ViewModelFactory.getInstance(this))[DetailMovieViewModel::class.java]
 
         initVariable()
 

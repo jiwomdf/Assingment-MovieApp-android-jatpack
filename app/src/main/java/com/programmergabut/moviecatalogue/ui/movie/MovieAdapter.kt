@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.programmergabut.moviecatalogue.R
-import com.programmergabut.moviecatalogue.data.remote.json.npmovie.Result
+import com.programmergabut.moviecatalogue.data.local.entity.NPMovie
 import com.programmergabut.moviecatalogue.ui.detailMovie.DetailMovieActivity
 import com.programmergabut.moviecatalogue.utils.EnumConfig
 import kotlinx.android.synthetic.main.layout_movie.view.*
@@ -19,14 +19,14 @@ import kotlinx.android.synthetic.main.layout_movie.view.*
  *  Created by Katili Jiwo Adi Wiyono on 23/04/20.
  */
 
-class MovieAdapter : PagedListAdapter<Result,MovieAdapter.FilmViewHolder>(DIFF_CALLBACK) {
+class MovieAdapter : PagedListAdapter<NPMovie,MovieAdapter.FilmViewHolder>(DIFF_CALLBACK) {
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Result>() {
-            override fun areItemsTheSame(oldItem: Result, newItem: Result): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<NPMovie>() {
+            override fun areItemsTheSame(oldItem: NPMovie, newItem: NPMovie): Boolean {
                 return oldItem.id == newItem.id
             }
-            override fun areContentsTheSame(oldItem: Result, newItem: Result): Boolean {
+            override fun areContentsTheSame(oldItem: NPMovie, newItem: NPMovie): Boolean {
                 return oldItem == newItem
             }
         }
@@ -46,22 +46,24 @@ class MovieAdapter : PagedListAdapter<Result,MovieAdapter.FilmViewHolder>(DIFF_C
 
     inner class FilmViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        fun bind(movie: Result){
+        fun bind(movie: NPMovie){
             itemView.apply{
 
                 tv_movie_title.text = movie.title
                 tv_movie_overview.text = if(movie.overview.length > 150) movie.overview.substring(0,150) else movie.overview
 
                 Glide.with(context)
-                    .load(EnumConfig.imgBaseUrl + movie.posterPath)
+                    .load(EnumConfig.imgBaseUrl + movie.moviePosterUrl)
                     .centerCrop()
                     .into(iv_movie)
 
                 setOnClickListener {
 
-                    val b = initBundle(movie.id, movie.title,
-                        movie.releaseDate, movie.overview, movie.voteCount,
-                        movie.posterPath, movie.genreIds as ArrayList<Int>)
+                    val listGenre = initListGenre(movie)
+
+                    val b = initBundle(movie.id, movie.title!!,
+                        movie.ect, movie.overview, movie.vote,
+                        movie.moviePosterUrl!!, listGenre as ArrayList<Int>)
 
                     val intent = Intent(context, DetailMovieActivity::class.java).apply {
                         putExtra(DetailMovieActivity.bundleMovieDetail, b)
@@ -69,6 +71,18 @@ class MovieAdapter : PagedListAdapter<Result,MovieAdapter.FilmViewHolder>(DIFF_C
                     context.startActivity(intent)
                 }
             }
+        }
+
+        private fun initListGenre(movie: NPMovie): MutableList<Int> {
+            val clean = movie.genre.replace("[", "").replace("]", "")
+                .replace(" ", "").trim()
+            val genre = clean.split(",")
+            val listGenre = mutableListOf<Int>()
+            genre.forEach {
+                listGenre.add(it.toInt())
+            }
+
+            return listGenre
         }
 
         private fun initBundle(
