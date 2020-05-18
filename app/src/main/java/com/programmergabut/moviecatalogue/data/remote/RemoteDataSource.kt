@@ -2,7 +2,6 @@ package com.programmergabut.moviecatalogue.data.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.GsonBuilder
 import com.programmergabut.moviecatalogue.ContextProviders
 import com.programmergabut.moviecatalogue.data.remote.api.GenreService
 import com.programmergabut.moviecatalogue.data.remote.api.NPMovieService
@@ -11,11 +10,11 @@ import com.programmergabut.moviecatalogue.data.remote.json.RetrofitFactory
 import com.programmergabut.moviecatalogue.data.remote.json.genre.GenreApi
 import com.programmergabut.moviecatalogue.data.remote.json.npmovie.NPMovieApi
 import com.programmergabut.moviecatalogue.data.remote.json.oatvshow.OATvShowApi
+import com.programmergabut.moviecatalogue.utils.DataDummy
+import com.programmergabut.moviecatalogue.utils.EspressoIdlingResource
 import com.programmergabut.moviecatalogue.utils.Resource
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 /*
  *  Created by Katili Jiwo Adi Wiyono on 05/05/20.
@@ -63,15 +62,18 @@ class RemoteDataSource(private val contextProviders: ContextProviders) {
 
         val resultContent = MutableLiveData<Resource<NPMovieApi>>()
         GlobalScope.launch(contextProviders.IO){
-            //EspressoIdlingResource.increment()
+            EspressoIdlingResource.increment()
 
             try {
-                resultContent.postValue(Resource.success(fetchNPMovieApi()))
+                resultContent.postValue(Resource.success(
+                    //fetchNPMovieApi()
+                    DataDummy.simulateApiMovie()
+                ))
             }
             catch (ex: Exception){
                 Resource.error(ex.message.toString(), null)
             }
-            //EspressoIdlingResource.decrement()
+            EspressoIdlingResource.decrement()
         }
 
         return resultContent
@@ -81,15 +83,18 @@ class RemoteDataSource(private val contextProviders: ContextProviders) {
 
         val resultContent = MutableLiveData<Resource<OATvShowApi>>()
         GlobalScope.launch(contextProviders.IO){
-            //EspressoIdlingResource.increment()
+            EspressoIdlingResource.increment()
 
             try {
-                resultContent.postValue(Resource.success(fetchOATvShowApi()))
+                resultContent.postValue(Resource.success(
+                    //fetchOATvShowApi()
+                    DataDummy.simulateTvShowApi()
+                ))
             }
             catch (ex: Exception){
                 Resource.error(ex.message.toString(), null)
             }
-            //EspressoIdlingResource.decrement()
+            EspressoIdlingResource.decrement()
         }
         return resultContent
     }
@@ -97,14 +102,16 @@ class RemoteDataSource(private val contextProviders: ContextProviders) {
     fun getGenre(callback: LoadGenreCallback){
 
         GlobalScope.launch(contextProviders.IO){
-            //EspressoIdlingResource.increment()
+            EspressoIdlingResource.increment()
             try {
-                callback.onReceived(Resource.success(fetchGenreApi()))
+                callback.onReceived(Resource.success(
+                    fetchGenreApi()
+                ))
             }
             catch (ex: Exception){
                 Resource.error(ex.message.toString(), null)
             }
-            //EspressoIdlingResource.decrement()
+            EspressoIdlingResource.decrement()
         }
     }
 

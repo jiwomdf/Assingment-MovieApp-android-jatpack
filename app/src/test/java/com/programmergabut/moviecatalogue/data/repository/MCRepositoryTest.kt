@@ -1,18 +1,21 @@
 package com.programmergabut.moviecatalogue.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.any
+import androidx.paging.DataSource
 import com.nhaarman.mockitokotlin2.verify
+import com.programmergabut.moviecatalogue.ContextProviders
+import com.programmergabut.moviecatalogue.data.local.LocalDataSource
+import com.programmergabut.moviecatalogue.data.local.entity.NPMovie
+import com.programmergabut.moviecatalogue.data.local.entity.OATvShow
 import com.programmergabut.moviecatalogue.data.remote.RemoteDataSource
 import com.programmergabut.moviecatalogue.utils.DataDummy
-import com.programmergabut.moviecatalogue.utils.LiveDataTestUtil
+import com.programmergabut.moviecatalogue.utils.PagedListUtil
 import com.programmergabut.moviecatalogue.utils.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 
 /*
  *  Created by Katili Jiwo Adi Wiyono on 06/05/20.
@@ -24,45 +27,48 @@ class MCRepositoryTest{
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val remote = mock(RemoteDataSource::class.java)
-    private val mcrRepository = FakeMCRepository(remote)
+    private val local = mock(LocalDataSource::class.java)
+    private val contextProviders = mock(ContextProviders::class.java)
+
+    private val mcrRepository = FakeMCRepository(remote, local, contextProviders)
+
     //movie
-    private val movieResponse = Resource.success(DataDummy.generateMovie().data!!)
-    private val firstMovieID = movieResponse.data?.results!![0]
+    private val movieResponse = DataDummy.generateMovie()
+    //private val firstMovieID = movieResponse.data?.results!![0]
 
     //tvShow
-    private val tvShowResponse = Resource.success(DataDummy.generateTvShow().data!!)
-    private val firstTvShowID = tvShowResponse.data?.results!![0]
+    private val tvShowResponse = DataDummy.generateTvShow()
+    //private val firstTvShowID = tvShowResponse.data?.results!![0]
 
     @Test
     fun getAllMovie() {
-        doAnswer {
-            (it.arguments[0] as RemoteDataSource.LoadMovieCallback).onReceived(movieResponse)
-            null
-        }.`when`(remote).getNPMovie(any())
 
-        val movieApi = LiveDataTestUtil.getValue(mcrRepository.getNPMovie())
+        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, NPMovie>
 
-        verify(remote).getNPMovie(any())
-        assertNotNull(movieApi)
-        assertEquals(movieResponse.data?.results?.size?.toLong(), movieApi.data?.results?.size?.toLong())
+        `when`(local.getAllMovie()).thenReturn(dataSourceFactory)
+        mcrRepository.getNPMovie()
 
-        assertEquals(firstMovieID, movieApi.data?.results!![0])
+        val movieRetVal = Resource.success(PagedListUtil.mockPagedList(DataDummy.generateMovie()))
+        verify(local).getAllMovie()
+        assertNotNull(movieRetVal.data)
+        assertEquals(movieResponse.size.toLong(), movieRetVal.data?.size?.toLong())
+
+        //assertEquals(firstMovieID, movieApi.data?.results!![0])
     }
 
     @Test
     fun getAllTvShow(){
-        doAnswer{
-            (it.arguments[0] as RemoteDataSource.LoadTvShowCallback).onReceived(tvShowResponse)
-            null
-        }.`when`(remote).getOATvShow(any())
+        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, OATvShow>
 
-        val tvShowApi = LiveDataTestUtil.getValue(mcrRepository.getOATvShow())
+        `when`(local.getAllTvShow()).thenReturn(dataSourceFactory)
+        mcrRepository.getOATvShow()
 
-        verify(remote).getOATvShow(any())
-        assertNotNull(tvShowApi)
-        assertEquals(tvShowResponse.data?.results?.size?.toLong(), tvShowApi.data?.results?.size?.toLong())
+        val tvShowRetVal = Resource.success(PagedListUtil.mockPagedList(DataDummy.generateTvShow()))
+        verify(local).getAllTvShow()
+        assertNotNull(tvShowRetVal.data)
+        assertEquals(movieResponse.size.toLong(), tvShowRetVal.data?.size?.toLong())
 
-        assertEquals(firstTvShowID, tvShowApi.data?.results!![0])
+        //assertEquals(firstTvShowID, tvShowApi.data?.results!![0])
     }
 
 }

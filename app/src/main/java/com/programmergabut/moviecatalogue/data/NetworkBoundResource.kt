@@ -54,7 +54,7 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             when (response.Status) {
                 EnumStatus.SUCCESS ->
                     GlobalScope.launch(contextProviders.IO) {
-
+                        //EspressoIdlingResource.increment()
                         saveCallResult(response.data!!)
 
                         GlobalScope.launch(contextProviders.Main){
@@ -62,17 +62,22 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                                 setValue(Resource.success(newData))
                             }
                         }
+                        //EspressoIdlingResource.decrement()
                     }
                 EnumStatus.LOADING -> GlobalScope.launch(contextProviders.Main) {
+                    //EspressoIdlingResource.increment()
                     result.addSource(loadFromDB()) { newData ->
                         setValue(Resource.success(newData))
                     }
+                    //EspressoIdlingResource.decrement()
                 }
                 EnumStatus.ERROR -> {
+                    //EspressoIdlingResource.increment()
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
                         setValue(Resource.error(response.message!!, newData))
                     }
+                    //EspressoIdlingResource.decrement()
                 }
             }
         }

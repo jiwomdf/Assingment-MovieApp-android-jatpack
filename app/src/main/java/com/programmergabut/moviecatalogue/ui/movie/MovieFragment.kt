@@ -40,7 +40,7 @@ class MovieFragment : Fragment() {
     }
 
     private fun observeApi() {
-        viewModel.movie.observe(this, Observer {
+        viewModel.movie().observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {
@@ -59,8 +59,6 @@ class MovieFragment : Fragment() {
 
     private fun updateAdapterData(newData: PagedList<NPMovie>?, mvAdapter: MovieAdapter) {
         newData?.let { datas ->
-            //val new = datas.filterIndexed { index, _ -> index < 5 }.sortedByDescending { it.voteCount }
-            //val newSorted = datas.sortedByDescending { it.overview }
             mvAdapter.submitList(datas)
             mvAdapter.notifyDataSetChanged()
         }

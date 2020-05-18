@@ -25,7 +25,7 @@ class TvShowFragment : Fragment() {
 
     private lateinit var viewModel: TvShowViewModel
     private var tvShowAdapter = TvShowAdapter()
-    lateinit var rvListTvShow: RecyclerView
+    private lateinit var rvListTvShow: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -46,7 +46,7 @@ class TvShowFragment : Fragment() {
     }
 
     private fun observeApi() {
-        viewModel.tvShow.observe(this, Observer {
+        viewModel.tvShow().observe(this, Observer {
 
             when(it.Status){
                 EnumStatus.SUCCESS -> {
@@ -64,9 +64,7 @@ class TvShowFragment : Fragment() {
     }
 
     private fun updateAdapterData(newData: PagedList<OATvShow>?, mvAdapter: TvShowAdapter) {
-
         newData?.let { datas ->
-            //val newSorted = datas.sortedByDescending { it.overview } as PagedList<OATvShow>
             mvAdapter.submitList(datas)
             mvAdapter.notifyDataSetChanged()
         }
